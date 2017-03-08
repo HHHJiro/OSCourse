@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
 import Default from '../components/default'
 import Login from '../components/login'
 import File from '../components/file'
 import Video from '../components/video'
 import Comments from '../components/comments'
 import Testlog from '../components/testlog'
-
+Vue.use(Router)
 const routes = [
   { path: '/', component: Default },
   { path: '/file', component:File},
@@ -16,10 +16,6 @@ const routes = [
   // { path: '/test', component: Testlog}
 ]
 
-var router = new VueRouter({
-    routes: routes
-});
-
-export {
-    router
-}
+export default new Router({
+	routes
+})

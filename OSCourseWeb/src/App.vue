@@ -1,6 +1,6 @@
 <template>
  <div id="app">
-  <Hello message="path"></Hello>
+  <Hello></Hello>
   <!-- 路由出口 -->
   <!-- 路由匹配到的组件将渲染在这里 -->
   <router-view ></router-view>
@@ -13,12 +13,7 @@ import Hello from './components/Hello'
 
 export default {
   name: 'app',
-  components:{Hello},
-  watch: {
-  '$route'() {
-    this.routeData = this.$route.path
-  }
-}
+  components:{Hello}
 }
 </script>
 
