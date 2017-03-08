@@ -56,18 +56,31 @@ UserSchema.methods = {
 
 //静态方法
 UserSchema.statics = {
-	fetch: function(cb){
-		return this
+	fetch: async function(){
+		const usersInfo = await this
 			.find({})
 			.sort('meta.updateAt')
-			.exec(cb)
+			.catch(err=>{
+				console.log(err)
+			})
+			return usersInfo
 	},
-	findById: function(id,cb){
-	return this
-		.findOne({_id:id})
-		.sort('meta.updateAt')
-		.exec(cb)
-}
+	findById: async function(id){
+		 const userInfo =  await this
+		 .findOne({_id:id})
+		 .catch(err=>{
+			 console.log(err)
+			})
+		 return userInfo
+	},
+	findByName: async function(name){
+		 const userInfo =  await this
+		 .findOne({name:name})
+		 .catch(err=>{
+			 console.log(err)
+			})
+		 return userInfo
+	}
 }
 
 
