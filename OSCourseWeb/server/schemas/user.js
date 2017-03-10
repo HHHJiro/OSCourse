@@ -41,15 +41,14 @@ UserSchema.pre('save', function (next) {
   }
   var hash = bcrypt.hashSync(this.password);
   this.password = hash;
-
   next();
 });
   
 UserSchema.methods = {
- 	comparePassword: function (_password, cb) {
+ 	comparePassword: function (_password) {
     var hash = this.password;
     var isMatch = bcrypt.compareSync(_password, hash);
-      cb(null, isMatch);
+      return isMatch
     }
 };
 

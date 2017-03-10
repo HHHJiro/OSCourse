@@ -36,7 +36,6 @@
   </el-row>
 </template>
 <script>
-import bcrypt from 'bcryptjs'
 	export default {
     data () {
       return {
@@ -66,13 +65,14 @@ import bcrypt from 'bcryptjs'
       var self = this
       const user={
         name:this.name,
-        password:bcrypt.hashSync(this.password)
+        password:this.password
       }
       alert(user.password)
       this.$http.post('/auth/user',user)
         .then(response =>{
           if(response.data.success)
            {
+            sessionStorage.setItem('user-token',response.data.token); // 用sessionStorage把token存下来
             self.$message({
                      message:  `欢迎你${user.name}同学`,
                      type: 'success'
@@ -80,13 +80,13 @@ import bcrypt from 'bcryptjs'
             this.$router.push('/video')
           }
           else{
-            this.$message.error(res.data.info); // 登录失败，显示提示语
-            sessionStorage.setItem('OS-Course-token',null); // 将token清空
+            this.$message.error(response.data.info); // 登录失败，显示提示语
+            sessionStorage.setItem('user-token',null); // 将token清空
           }
         },
         response =>{
           self.$message.error("登录失败")
-          sessionStorage.setItem('OS-Course-token',null);
+          sessionStorage.setItem('user-token',null);
         })
     },
     register() {

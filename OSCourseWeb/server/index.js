@@ -4,7 +4,7 @@ const
 	Koa = require('koa'),
 	router = require('koa-router')(),
 	json = require('koa-json'),
-  	logger = require('koa-logger'),
+  logger = require('koa-logger'),
 	path = require('path'),
 	bodyParser = require('koa-bodyparser'),
 	auth = require('./routes/auth.js'); // 引入auth

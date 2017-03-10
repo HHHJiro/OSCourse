@@ -5,7 +5,12 @@
     <template slot="title" >{{chroseText}}</template>
     <el-menu-item v-for="chrose in chroses" :key="chrose.key" :index="chrose.key"  >{{chrose.contentText}}</el-menu-item>
   </el-submenu>
-  <el-menu-item index="/login" >登录</el-menu-item>
+  <template v-if="!Auth">
+    <el-menu-item index="/login" >登录</el-menu-item>
+  </template>
+  <template v-else>
+    <el-menu-item index="/login" >{{user.name}}同学</el-menu-item>
+  </template>
     <el-form :inline="true" :model="searchfor" class="demo-form-inline">
       <el-form-item class="form-search">  
         <el-input v-model="search" placeholder="请输入内容"></el-input>
@@ -26,6 +31,8 @@
         search: '',
         title:this.$route.path,
         searchfor:{},
+        Auth:false,
+        user:{},
         chroses:
           [
             {
@@ -43,8 +50,16 @@
           ]
       };
     },
-    created:function(){
-     
+    created(){
+      const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
+      if(userInfo != null){
+        this.user.id = userInfo.id;
+        this.user.name = userInfo.name;
+        this.Auth = true
+      }else{
+        this.id = '';
+        this.name = ''
+      }
     },
     computed:{
 
@@ -58,9 +73,18 @@
           message: '搜索'+this.search,
           type: 'success'
         })
+      },
+      getUserInfo(){ // 获取用户信息
+      const token = sessionStorage.getItem('user-token');
+      if(token != null && token != 'null'){
+        let decode = jwt.verify(token,'OS-Course-Website'); // 解析token
+        return decode // decode解析出来实际上就是{name: XXX,id: XXX}
+      }else {
+        return null
       }
     }
   }
+}
   </script>
   <style lang="stylus" scoped>
     .el-menu-demo{
