@@ -1,23 +1,26 @@
 <template>
-<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect" :router='true'>
-  <el-menu-item index="/"  >首页</el-menu-item>
-  <el-submenu index='/'  >
-    <template slot="title" >{{chroseText}}</template>
-    <el-menu-item v-for="chrose in chroses" :key="chrose.key" :index="chrose.key"  >{{chrose.contentText}}</el-menu-item>
-  </el-submenu>
-  <template v-if="!Auth">
-    <el-menu-item index="/login" >登录</el-menu-item>
-  </template>
-  <template v-else>
-    <el-menu-item index="/login" >{{user.name}}同学</el-menu-item>
-  </template>
-    <el-form :inline="true" :model="searchfor" class="demo-form-inline">
-      <el-form-item class="form-search">  
+<header id="header">
+  <div id="header-wrap">
+    <h1 id="badge"><img src="/static/img/badge.png ">操作系统课程网站</h1>
+    
+    <el-menu :default-active="activeIndex" class="el-menu-demo header-ul" mode="horizontal" @select="handleSelect" :router='true'>
+        <el-menu-item index="/"  >首页</el-menu-item>
+        <el-menu-item index="/1"  >文档</el-menu-item>
+        <el-menu-item index="/2"  >视频</el-menu-item>
+        <el-menu-item index="/3"  >讨论区</el-menu-item>
+        <template v-if="!Auth">
+          <el-menu-item index="/login" >登录</el-menu-item>
+        </template>
+        <template v-else>
+          <el-menu-item index="/login" >{{user.name}}同学</el-menu-item>
+        </template>
+    </el-menu>
+    <div class="header-search">
         <el-input v-model="search" placeholder="请输入内容"></el-input>
         <el-button type="primary" icon="search" @click="onSearch">搜索</el-button>
-      </el-form-item>  
-    </el-form>
-</el-menu>
+    </div>  
+  </div>
+</header><!-- /header -->
 
 </template>
 
@@ -32,23 +35,8 @@
         title:this.$route.path,
         searchfor:{},
         Auth:false,
-        user:{},
-        chroses:
-          [
-            {
-              key:"/file",
-              contentText:"文档"
-            },
-            {
-              key:"/video",
-              contentText:"视频"
-            },
-            {
-              key:"/comments",
-              contentText:"讨论区"
-            }
-          ]
-      };
+        user:{}
+      }
     },
     created(){
       const userInfo = this.getUserInfo(); // 新增一个获取用户信息的方法
@@ -87,6 +75,47 @@
 }
   </script>
   <style lang="stylus" scoped>
+  * {
+    font-family: "Arial","Microsoft YaHei","宋体","黑体",sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+   #header {
+    height: 80px;
+   }
+   #header-wrap {
+    display: flex;
+    margin: 0 96px;
+    padding: 0 20px;
+    }
+   .header-ul {
+    flex-grow: 1
+    height: 80px;
+    background: transparent;
+   }
+   .header-ul > li, div {
+     height: 80px;
+     line-height: 80px;
+   }
+    #badge {
+      font-size: 30px;
+    }
+    #badge >img{
+      float: left;
+      width: 60px;
+      line-height: 80px;
+      color: #000;
+      margin-top: 15px;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+    .demo-form-inline {
+      height: 80px;
+      margin: 0;
+    }
+    .header-search {
+      flex-grow: 1
+    }
     .el-menu-demo{
       padding-left: 55px;
     }
