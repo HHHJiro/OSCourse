@@ -1,7 +1,7 @@
 <template>
 <header id="header">
   <div id="header-wrap">
-    <h1 id="badge"><img src="/static/img/badge.png ">操作系统课程网站</h1>
+    <h1 id="badge"><img src="/static/img/badge.png "><span class="os-course">操作系统课程网站</span></h1>
     
     <el-menu :default-active="activeIndex" class="el-menu-demo header-ul" mode="horizontal" @select="handleSelect" :router='true'>
         <el-menu-item index="/"  >首页</el-menu-item>
@@ -9,15 +9,17 @@
         <el-menu-item index="/2"  >视频</el-menu-item>
         <el-menu-item index="/3"  >讨论区</el-menu-item>
         <template v-if="!Auth">
-          <el-menu-item index="/login" >登录</el-menu-item>
+          <el-menu-item index="/login" class="right-btn">登录</el-menu-item>
         </template>
         <template v-else>
           <el-menu-item index="/login" >{{user.name}}同学</el-menu-item>
         </template>
     </el-menu>
-    <div class="header-search">
-        <el-input v-model="search" placeholder="请输入内容"></el-input>
-        <el-button type="primary" icon="search" @click="onSearch">搜索</el-button>
+  </div>
+  <div class="search-box">
+    <div class="hd-search">
+        <el-input v-model="search" id="search-input" placeholder="请输入内容"></el-input>
+        <el-button type="primary" icon="search" class="search-btn"  @click="onSearch">搜索</el-button>
     </div>  
   </div>
 </header><!-- /header -->
@@ -81,48 +83,86 @@
     padding: 0;
   }
    #header {
-    height: 80px;
+    height: 60px;
+    color: rgba(255,255,255,0.9);
+    background: #1c2026;
    }
    #header-wrap {
-    display: flex;
+    width: 1160px;
     margin: 0 96px;
     padding: 0 20px;
+    overflow: hidden;
     }
    .header-ul {
-    flex-grow: 1
-    height: 80px;
-    background: transparent;
+    float: right;
+    width: 720px;
+    height: 60px;
+    margin: 0 40px;
    }
    .header-ul > li, div {
-     height: 80px;
-     line-height: 80px;
+     height: 60px;
+     line-height: 60px;
+     border-bottom: none;
+     color: rgba(255,255,255,0.7);
+   }
+   .el-menu {
+    background: transparent;
+   }
+   .header-ul > li:hover, .is-active{
+    background-color: #444;
+    border-bottom: none;
    }
     #badge {
+      float: left;
+      width: 340px;
       font-size: 30px;
     }
     #badge >img{
       float: left;
       width: 60px;
-      line-height: 80px;
+      line-height: 60px;
       color: #000;
-      margin-top: 15px;
-      margin-left: 20px;
-      margin-right: 20px;
     }
     .demo-form-inline {
-      height: 80px;
+      height: 60px;
       margin: 0;
-    }
-    .header-search {
-      flex-grow: 1
-    }
-    .el-menu-demo{
-      padding-left: 55px;
     }
      .el-select{
      width: 105px;
     }
     .el-input{
       width: 200px;
+    }
+    .el-menu-item:last-child {
+      position: absolute;
+      right: 0;
+    }
+    .search-box {
+      position: relative;
+      height: 160px;
+      background: url('/static/img/hd_search.png') no-repeat;
+      background-size: 30%;
+      background-color: #120f0b;
+      background-position: 50% 30px;
+    }
+    .hd-search {
+      position: absolute;
+      bottom: 10%;
+      left: 60%;
+    }
+    #header #earch-input {
+      border: 1px solid #324057;
+      background-color: #000;
+    }
+    .search-input:focus {
+      border-color: #000;
+    } 
+    .search-btn {
+      background-color: #000;
+      border: 1px solid #99A9BF;
+    }
+    .search-btn:hover {
+      background-color: #475669;
+      border-color:#D3DCE6
     }
   </style>
