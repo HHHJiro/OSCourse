@@ -43,8 +43,9 @@ export default {
     list-style: none
   a 
     text-decoration: none
-  a:hover 
-    text-decoration: underline
+    color: #fff
+    &:hover 
+      text-decoration: none
   sup 
     vertical-align: text-top
   sub

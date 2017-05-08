@@ -9,10 +9,10 @@
       <div class="hd-ctn">
         <h1 id="badge"><img src="/static/img/badge.png "><span class="os-course">操作系统课程网站</span></h1>
         <el-menu :default-active="activeIndex" class="el-menu-demo header-ul" mode="horizontal" @select="handleSelect" :router='true'>
-          <el-menu-item index="/"  >首页</el-menu-item>
-          <el-menu-item index="/2"  >文档</el-menu-item>
-          <el-menu-item index="/3"  >视频</el-menu-item>
-          <el-menu-item index="/4"  >讨论区</el-menu-item>
+          <el-menu-item index="/" >首页</el-menu-item>
+          <el-menu-item index="/doc" >文档</el-menu-item>
+          <el-menu-item index="/video" >视频</el-menu-item>
+          <el-menu-item index="/community" >讨论区</el-menu-item>
         </el-menu>
         <div class="login">
           <mlgn></mlgn>
@@ -39,14 +39,19 @@ export default {
     mlgn
   },
   data () {
+    console.log(this.$route.path)
     return {
-      activeIndex: 'index',
-      chroseText: '教学资料',
+      activeIndex: this.$route.path,
       select: '',
       search: '',
       searchfor: {},
       Auth: false,
       user: {}
+    }
+  },
+  watch: {
+    activeIndex: function () {
+      console.log(window.location.href)
     }
   },
   created () {
