@@ -95,7 +95,7 @@
         name:this.name,
         password:this.password
       }
-      this.$http.post('/api/user',user)
+      this.$http.post('/auth/user',user)
       .then(response => {
         // 响应成功回调
         self.$message({

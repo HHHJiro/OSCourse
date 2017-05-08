@@ -26,9 +26,10 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #1c2026;
+
 }
 .container{
   margin: 160px 55px 0;
+  background-color: #fff;
 }
 </style>

@@ -85,7 +85,7 @@
    #header {
     height: 60px;
     color: rgba(255,255,255,0.9);
-    background: #1c2026;
+    background: #24292e;
    }
    #header-wrap {
     width: 1160px;
@@ -142,7 +142,7 @@
       height: 160px;
       background: url('/static/img/hd_search.png') no-repeat;
       background-size: 30%;
-      background-color: #120f0b;
+      background-color: rgba(36, 41, 46, 0.7);
       background-position: 50% 30px;
     }
     .hd-search {
