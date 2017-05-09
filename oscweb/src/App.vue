@@ -1,28 +1,33 @@
 <template>
- <div id="app">
-  <header> <ghd></ghd> </header>
-    <!-- 路由出口 -->
-    <!-- 路由匹配到的组件将渲染在这里 -->
+  <div id="app">
+    <header> <ghd></ghd> </header>
+      <!-- 路由出口 -->
+      <!-- 路由匹配到的组件将渲染在这里 -->
     <div class="container">
       <router-view ></router-view>
     </div>
+    <footer><gft></gft></footer>
   </div>
 </template>
 
 <script>
 // import jwt from 'jsonwebtoken'
 import ghd from '@/components/ghd'
+import gft from '@/components/gft'
 
 export default {
   name: 'app',
-  components: {ghd}
+  components: {
+    ghd,
+    gft
+  }
 }
 </script>
 
 <style lang="sass">
   $marLR: 96px
   $marTop: 10px
-
+  $marBtm: 40px
   body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td 
     margin: 0
     padding: 0
@@ -61,12 +66,13 @@ export default {
     border-spacing: 0
 
   #app 
-    font-family: 'Avenir', Helvetica, Arial, sans-serif
+    font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
     color: #2c3e50
   
   .container
-    margin: $marTop $marLR 0
+    margin: $marTop $marLR $marBtm
     background-color: #fff
+    min-height: 400px
 </style>
