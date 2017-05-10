@@ -1,6 +1,7 @@
 <template>
   <div id="m-vdo">
     <p>这里是视频</p>
+    <router-view ></router-view>
   </div>
 </template>
 <script >

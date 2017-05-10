@@ -3,6 +3,7 @@
     <header> <ghd></ghd> </header>
       <!-- 路由出口 -->
       <!-- 路由匹配到的组件将渲染在这里 -->
+    <div class="hr"></div>
     <div class="container">
       <router-view ></router-view>
     </div>
@@ -66,11 +67,14 @@ export default {
     border-spacing: 0
 
   #app 
-    font-family: "Microsoft YaHei",Arial,Helvetica,sans-serif
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
     color: #2c3e50
-  
+  .hr
+    width: 100%
+    background: rgb(241, 242, 243)
+    height: 20px
   .container
     margin: $marTop $marLR $marBtm
     background-color: #fff

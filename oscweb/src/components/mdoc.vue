@@ -1,6 +1,7 @@
 <template>
   <div id="m-doc">
     <p>这里是文档</p>
+    <router-view></router-view>
   </div>
 </template>
 <script >

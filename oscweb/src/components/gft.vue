@@ -21,7 +21,7 @@ export default {
   $defaultMarLR: 96px
   #gft
     width: 100%
-    background: #f6f9fa
+    background: rgb(241, 242, 243)
     height: 200px
     .ft-wrap
       margin: 0 $defaultMarLR 0
