@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import gctn from '@/components/gctn'
+import v2Gctn from '@/components/v2_gctn'
 import doc from '@/components/mdoc'
 import video from '@/components/mvdo'
 import add from '@/components/add_res'
@@ -14,7 +14,7 @@ const routes = [
   {
     path: '/',
     name: 'gctn',
-    component: gctn
+    component: v2Gctn
   },
   {
     path: '/doc',

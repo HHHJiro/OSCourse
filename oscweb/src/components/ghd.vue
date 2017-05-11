@@ -1,17 +1,23 @@
 <template>
 <div id="g-hd">
-  <div id="hd-wrap">
+  <div class="hd-wrap">
     <div class="hd-top">
       <div class="mask-wrap">
         <div class="hd-mask"></div>
         <div class="mask-bg"></div>
       </div>
       <div class="hd-ctn">
-        <h1 id="badge"><img src="/static/img/badge.png "><span class="os-course">操作系统课程网站</span></h1>
+        <h1 id="badge"><img src="/static/img/badge.png "><span class="os-course">操作系统教学平台</span></h1>
         <el-menu :default-active="activeIndex" class="el-menu-demo header-ul" mode="horizontal" @select="handleSelect" :router='true'>
           <el-menu-item index="/" >首页</el-menu-item>
-          <el-menu-item index="/doc" >文档</el-menu-item>
-          <el-menu-item index="/video" >视频</el-menu-item>
+          <el-submenu index="/video" class="no-btmbdr">
+            <template slot="title">视频</template>
+            <el-menu-item index="/t-vdo">教学视频</el-menu-item>
+            <el-menu-item index="/s-vdo">师生微课</el-menu-item>
+          </el-submenu>
+          <el-menu-item index="/outline" >教学大纲</el-menu-item>
+          <el-menu-item index="/team" >教学团队</el-menu-item>
+          <el-menu-item index="/resources" >教学资源</el-menu-item>
           <el-menu-item index="/community" >讨论区</el-menu-item>
         </el-menu>
         <div class="login">
@@ -96,16 +102,18 @@ export default {
   $ulWdh: 620px
   $ulMarLR: 40px
   $loginWth: 100px
-  $liClr: rgba(255,255,255,0.8)
+  $liClr: #222
   $liHvrClr: rgba(255,255,255,0.24)
   $maskClr: rgb(5, 18, 26)
   
   #g-hd
     background: url('/static/img/hd_top.png') no-repeat
-    background-size: auto 200%
-    background-position: center
+    background-size: 100% 
+    background-position: center -86px
     background-color: $maskClr
-  #hd-wrap
+    .no-btmbdr
+      border-bottom: none
+  .hd-wrap
     position: relative
     .mask-wrap
       position: absolute
@@ -122,10 +130,10 @@ export default {
         width: 100%
         height: 110px
         background: url('/static/img/hd_top.png') no-repeat
-        background-size: auto 440px
-        filter: blur(3px)
-        background-position: center -99px
-        z-index: 50
+        background-size: 100%
+        filter: blur(5px)
+        background-position: center -81px
+        z-index: 10
         padding: 0 20px
         background-color: $maskClr
       .mask-bg
@@ -135,12 +143,11 @@ export default {
         width: 100%
         height: 100%
         background-color: rgba(255, 255, 255, 0.1)
-        z-index: 100
+        z-index: 20
   .hd-top
     position: relative
     height: $topHt
     width: 100%
-    overflow: hidden
     background: #fff
     box-shadow: rgba(0,0,0,0.1) 0 1px 2px
     background-color: transparent
@@ -150,7 +157,7 @@ export default {
       width: $topWdh
       margin: 0 $topMarLR
       background: transparent
-      z-index: 1000
+      z-index: 30
       zoom: 1
     .header-ul
       float: left
@@ -173,14 +180,14 @@ export default {
   #badge
     float: left
     width: 340px
-    font-size: 30px
+    font-size: 28px
     display: flex
     justify-content: space-around
     align-items: center
     .os-course
       height: 60px
       line-height: 60px
-      color: rgb(80, 191, 255)
+      color: #870101
     & > img
       float: left
       width: 48px
