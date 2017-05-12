@@ -14,10 +14,6 @@
         <el-form-item label="确认密码" prop="checkPass">
           <el-input type="password" v-model="login.checkPass" auto-complete="off"></el-input>
         </el-form-item>
-<!--         <el-form-item>
-          <el-button type="primary" @click="submitForm('login')">提交</el-button>
-          <el-button @click="resetForm('login')">重置</el-button>
-        </el-form-item> -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="lgnFormVis = false">取 消</el-button>
@@ -85,6 +81,7 @@
         lgnFormVis: false,
         lgnInFormVis: false,
         maskOnBody: false,
+        nickName: '匿名用户',
         login: {
           pass: '',
           checkPass: '',
@@ -121,11 +118,16 @@
         if (formName === 'login') {
           this.$refs[formName].validate((valid) => {
             if (valid) {
-              this.$message({
-                message: `用户：${self.login.id} 注册成功`,
-                type: 'success'
-              })
-              self.lgnFormVis = false
+              let user = {id: self.login.id, password: self.login.pass}
+              self.$http.post('/api/user/add', user)
+                .then(res => {
+                  self.$message.success('注册成功')
+                  localStorage['osc-access-token'] = res.data.token
+                  self.lgnFormVis = false
+                  self.resetForm(formName)
+                }, res => {
+                  self.$message.error('注册失败')
+                })
             } else {
               console.log('error submit!!')
               return false
@@ -134,6 +136,13 @@
         } else {
           this.$refs[formName].validate((valid) => {
             if (valid) {
+              let user = {id: self.lgnIn.id, password: self.lgnIn.pass}
+              self.$http.post('/api/user/auth', user)
+                .then(res => {
+                  console.log(res.data)
+                }, res => {
+                  console.log(res.data)
+                })
               this.$message({
                 message: `欢迎用户：${self.lgnIn.id}`,
                 type: 'success'

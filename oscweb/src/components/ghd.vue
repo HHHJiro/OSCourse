@@ -11,9 +11,9 @@
         <el-menu :default-active="activeIndex" class="el-menu-demo header-ul" mode="horizontal" @select="handleSelect" :router='true'>
           <el-menu-item index="/" >首页</el-menu-item>
           <el-submenu index="/video" class="no-btmbdr">
-            <template slot="title">视频</template>
-            <el-menu-item index="/t-vdo">教学视频</el-menu-item>
-            <el-menu-item index="/s-vdo">师生微课</el-menu-item>
+            <template slot="title" class="sub-tit">视频</template>
+            <el-menu-item index="/tvdo">教学视频</el-menu-item>
+            <el-menu-item index="/svdo">师生微课</el-menu-item>
           </el-submenu>
           <el-menu-item index="/outline" >教学大纲</el-menu-item>
           <el-menu-item index="/team" >教学团队</el-menu-item>
@@ -111,8 +111,6 @@ export default {
     background-size: 100% 
     background-position: center -86px
     background-color: $maskClr
-    .no-btmbdr
-      border-bottom: none
   .hd-wrap
     position: relative
     .mask-wrap
