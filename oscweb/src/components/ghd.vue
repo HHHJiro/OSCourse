@@ -18,10 +18,10 @@
           <el-menu-item index="/outline" >教学大纲</el-menu-item>
           <el-menu-item index="/team" >教学团队</el-menu-item>
           <el-menu-item index="/resources" >教学资源</el-menu-item>
-          <el-menu-item index="/community" >讨论区</el-menu-item>
+          <el-menu-item index="/community" @click="getInfo">讨论区</el-menu-item>
         </el-menu>
         <div class="login">
-          <mlgn></mlgn>
+          <mlgn :isAuth="isAuth"></mlgn>
         </div> 
       </div>
     </div>
@@ -38,20 +38,19 @@
 <script>
 import msrh from '@/components/msrh'
 import mlgn from '@/components/mlgn'
-
 export default {
   components: {
     msrh,
     mlgn
   },
   data () {
-    console.log(this.$route.path)
     return {
       activeIndex: this.$route.path,
       select: '',
       search: '',
+      funs: '',
       searchfor: {},
-      Auth: false,
+      isAuth: {},
       user: {}
     }
   },
@@ -61,15 +60,7 @@ export default {
     }
   },
   created () {
-    const userInfo = this.getUserInfo() // 新增一个获取用户信息的方法
-    if (userInfo != null) {
-      this.user.id = userInfo.id
-      this.user.name = userInfo.name
-      this.Auth = true
-    } else {
-      this.id = ''
-      this.name = ''
-    }
+    this.getInfo()
   },
   computed: {
   },
@@ -91,6 +82,17 @@ export default {
       // } else {
       //   return null
       // }
+    },
+    getInfo: function () {
+      const self = this
+      this.$http.get('api/user/info')
+      .then(res => {
+        var data = res.data.result
+        self.$set(self.isAuth, 'auth', true)
+        self.$set(self.isAuth, 'user', data)
+      }, res => {
+        console.log('oh no')
+      })
     }
   }
 }

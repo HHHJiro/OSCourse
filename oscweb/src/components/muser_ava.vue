@@ -1,0 +1,61 @@
+<template>
+  <div id="user-info">
+    <div class="info-menu">
+      <el-dropdown trigger="click" menu-align="start" @command="handleCommand">
+      <span class="el-dropdown-link avatar-box">
+          <div class="avatar"><img :src="user.avatar" alt="avatar"></div>
+          <i class="el-icon-caret-bottom el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="add">我要上传</el-dropdown-item>
+          <el-dropdown-item command="homepage">我的主页</el-dropdown-item>
+          <el-dropdown-item command="quit">退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  props: ['user'],
+  data () {
+    return {
+    }
+  },
+  mounted: function () {
+  },
+  methods: {
+    handleCommand (command) {
+      var self = this
+      if (command === 'quit') {
+        this.commandQuit()
+      } else if (command === 'homepage') {
+        this.$router.push('/u/' + self.user.id)
+      }
+    },
+    commandQuit () {
+      localStorage.clear()
+      this.$parent.quit()
+      this.$router.push('/')
+    }
+  }
+}
+</script>
+<style lang="sass" scoped>
+  #user-info
+    width: 100%
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    .avatar-box
+      display: flex
+      justify-content: center
+      align-items: center
+      &:hover
+        cursor: pointer
+      .avatar
+        width: 30px
+        img
+          width: 100%
+</style>

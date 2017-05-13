@@ -27,7 +27,6 @@ const authToken = (req, res, next) => {
       }
       // 当所有验证条件都通过时，返回给路由处理，还可在请求上附加信息
       req.id = decoded.iss
-      // console.log(req.id)
       next()
     } catch (err) {
       res.send(500, {

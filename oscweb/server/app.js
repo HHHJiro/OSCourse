@@ -31,6 +31,7 @@ server.get('api/echo/:name', function (req, res, next) {
 // server.get('api/users', api.getAllUserInfo)
 server.post('api/user/add', api.userAdd)
 server.post('api/user/auth', api.login)
+server.get('api/user/info', Utils.authToken, api.showInfo)
 // server.get('api/token', Utils.authToken, (req, res, next) => {
 //   res.send(req.id)
 // })

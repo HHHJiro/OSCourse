@@ -9,7 +9,6 @@ import vdoView from '@/components/vdo_view'
 import docView from '@/components/doc_view'
 
 Vue.use(Router)
-
 const routes = [
   {
     path: '/',
@@ -35,8 +34,13 @@ const routes = [
   {
     path: '/add',
     component: add
+  },
+  {
+    path: '/u/:id',
+    component: resolve => require(['@/components/muser_page'], resolve)
   }
 ]
+
 export default new Router({
   routes
 })

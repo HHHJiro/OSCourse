@@ -51,7 +51,6 @@
   </div>
 </template>
 <script>
-  import Mditor from 'mditor'
   export default {
     data () {
       return {
@@ -124,13 +123,6 @@
       }
     },
     mounted () {
-      this.$nextTick(function () {
-        var mditor = Mditor.fromTextarea(document.getElementById('editor'))
-        mditor.on('ready', function () {
-          console.log(mditor.value)
-          mditor.value = '** hello **'
-        })
-      })
     }
   }
 </script>

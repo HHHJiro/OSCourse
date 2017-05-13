@@ -5,12 +5,27 @@ import Vue from 'vue'
 import router from '@/router/index'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import fun from '../static/js/fun'
 import ElementUI from 'element-ui' // 引入element-ui
 import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(ElementUI)
 Vue.use(VueAxios, axios)
-// Vue.prototype.$http = axios
+Vue.prototype.fun = fun
+Vue.filter('formDate', fun.formDate)
+axios.interceptors.request.use(function (req) {
+  const AUTH_TOKEN = window.localStorage.getItem('osc-access-token')
+  if (AUTH_TOKEN) {
+    req.headers['osc-access-token'] = AUTH_TOKEN
+  }
+  // console.log(req.headers)
+  return req
+}, function (error) {
+  console.log('here')
+    // 对请求错误做些什么 返回失败
+  return Promise.reject(error)
+})
+
 new Vue({
   mode: 'history',
   template: '<App/>',
