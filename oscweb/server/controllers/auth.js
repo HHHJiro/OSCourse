@@ -40,7 +40,7 @@ const getAllUserInfo = async (req, res, next) => {
   res.send(result)
   return next()
 }
-
+//注册
 const userAdd = (req, res, next) => {
   const params = req.body
   let user = new User({

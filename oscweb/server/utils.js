@@ -1,7 +1,11 @@
 const config = require('./config')
 const jwt = require('jwt-simple') // 引入jwt
 const SECRET = config.auth.SECRET
-
+const path = require('path')
+const fs = require('fs')
+const User = require('./models/user.js')
+const _ = require('lodash')
+const status = require('./status')
 
 // 签发token
 const signToken = (id) => {
@@ -13,6 +17,7 @@ const signToken = (id) => {
   return token
 }
 
+// 验证token
 const authToken = (req, res, next) => {
   const token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['osc-access-token']
   if (token) {
@@ -40,7 +45,51 @@ const authToken = (req, res, next) => {
   }
 }
 
+// 上传文件
+// req.type: avatar
+const upload = (req, res, next) => {
+  const filePath = req.url.split('/').pop()
+  req.type = filePath
+  // cosnt filePath = 
+  for (var i in req.files) {
+    let file = req.files[i]
+    if (file.size == 0){
+      // 使用同步方式删除一个文件
+      fs.unlinkSync(file.path)
+      req.uploadFlag = false
+    } else {
+      var fileName = filePath + '_' + file.hash + '.jpg'
+      var target_path = path.join('../static/img', filePath, fileName)
+      // 使用同步方式重命名一个文件
+      fs.renameSync(file.path, target_path)
+      req.uploadFlag = true
+      req.fileName = fileName
+    }
+    next()
+  }
+}
+// 更改数据库
+const editAvaPath = (req, res, next) => {
+  const type = req.type
+  const avaPath = './static/img/avatar/'
+  const filePath = avaPath + req.fileName
+  if (type === 'avatar') {
+    var data = {}
+    data.avatar = filePath
+    User.findById(req.id)
+      .then(user => {
+        user.save(_.assign(user,data))
+        next()
+      })
+      .catch(err => {
+        res.send(status.wrong, '更改头像失败')
+      })
+  }
+}
+
 module.exports = {
   signToken,
-  authToken
+  authToken,
+  upload,
+  editAvaPath
 }

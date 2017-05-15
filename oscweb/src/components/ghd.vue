@@ -90,6 +90,7 @@ export default {
         var data = res.data.result
         self.$set(self.isAuth, 'auth', true)
         self.$set(self.isAuth, 'user', data)
+        self.$parent.$data.avatar = data.avatar
       }, res => {
         console.log('oh no')
       })

@@ -21,6 +21,11 @@ export default {
   components: {
     ghd,
     gft
+  },
+  data () {
+    return {
+      avatar: ''
+    }
   }
 }
 </script>
