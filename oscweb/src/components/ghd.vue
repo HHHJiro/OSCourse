@@ -74,15 +74,6 @@ export default {
         type: 'success'
       })
     },
-    getUserInfo () { // 获取用户信息
-      // const token = sessionStorage.getItem('user-token')
-      // if (token != null && token != 'null') {
-      //   let decode = jwt.verify(token,'OS-Course-Website') // 解析token
-      //   return decode // decode解析出来实际上就是{name: XXX,id: XXX}
-      // } else {
-      //   return null
-      // }
-    },
     getInfo: function () {
       const self = this
       this.$http.get('api/user/info')
@@ -90,7 +81,6 @@ export default {
         var data = res.data.result
         self.$set(self.isAuth, 'auth', true)
         self.$set(self.isAuth, 'user', data)
-        self.$parent.$data.avatar = data.avatar
       }, res => {
         console.log('oh no')
       })

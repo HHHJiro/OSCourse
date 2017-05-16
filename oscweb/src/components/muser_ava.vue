@@ -27,10 +27,16 @@ export default {
   methods: {
     handleCommand (command) {
       var self = this
-      if (command === 'quit') {
-        this.commandQuit()
-      } else if (command === 'homepage') {
-        this.$router.push('/u/' + self.user.id)
+      switch (command) {
+        case 'quit':
+          this.commandQuit()
+          break
+        case 'homepage':
+          this.$router.push('/user/' + self.user.id)
+          break
+        case 'add':
+          this.$router.push('/add')
+          break
       }
     },
     commandQuit () {

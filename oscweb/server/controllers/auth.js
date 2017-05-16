@@ -4,13 +4,13 @@ const Utils = require('../utils')
 //登陆
 const login = async (req, res, next) => {
   const params = req.body
-  const user = await User.findById(params.id)
+  const user = await User.findByAccount(params.id)
   if(user != null){ // 如果查无此用户会返回null
     let isMatch = user.comparePassword(params.password)
     if(!isMatch){
       res.send(401, {info: '密码错误'})
     } else { // 如果密码正确
-      const token = Utils.signToken(params.id)
+      const token = Utils.signToken(user._id)
       res.send(200, {info: `欢迎用户:${params.id}`,token: token})
     }
   } else {
@@ -22,7 +22,7 @@ const getUserInfo = async  (req, res, next) => {
   const params = req.params
   let id = params.id // 获取url里传过来的参数里的id
   // await “同步”地返回查询结果
-  const result = await User.findById(id).catch(err => {console.log(err)})
+  const result = await User.findByAccount(id).catch(err => {console.log(err)})
   res.send(200,result)
   return next()
 }
@@ -61,10 +61,22 @@ const userAdd = (req, res, next) => {
   })
 }
 
+//修改用户信息
+const putInfo = (req, res) => {
+  const nickName = req.body
+  User.findOneAndUpdate({_id: req.id}, nickName, {upsert:true}, function(err, doc){
+    if (err) {
+      res.send(400, '修改失败')
+    }
+  })
+  res.send(201, '修改成功')
+}
+
 module.exports = {
   login,
   getUserInfo,
   getAllUserInfo,
   userAdd,
-  showInfo
+  showInfo,
+  putInfo
 }

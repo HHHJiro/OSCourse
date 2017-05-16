@@ -20,7 +20,12 @@
       </div>
       <div class="hd-right">
         <ul>
-          <li class="name"><span class="rt-desc">昵称：</span>{{user.nickName}}</li>
+          <li class="name">
+            <span class="rt-desc">昵称：</span>
+            <span v-if="editName" class="editName"><el-input v-model="user.nickName" size="small"></el-input></span>
+            <span v-else class="nickName">{{user.nickName}}</span>
+            <i :class="[iconEdit.edit, iconEdit.marLf, {active: editName}]" @click="nameState"></i>
+          </li>
           <li><span class="rt-desc">权限：</span><el-tag type="success">{{user.role | roleFormat}}</el-tag></li>
           <li><span class="rt-desc">来到社区：</span><el-tag type="primary">{{user.meta.createAt | formDate}}</el-tag></li>
         </ul>
@@ -32,9 +37,14 @@
   export default {
     data () {
       return {
-        user: '',
+        user: {},
         infoShow: false,
         imageUrl: '',
+        iconEdit: {
+          edit: 'el-icon-edit',
+          marLf: 'icon-lf'
+        },
+        editName: false,
         authHeader: {}
       }
     },
@@ -71,6 +81,18 @@
           this.$message.error('上传头像图片大小不能超过 2MB!')
         }
         return isJPG && isLt2M
+      },
+      nameState () {
+        var self = this
+        this.editName = !this.editName
+        this.iconEdit.isEdit = !this.iconEdit.isEdit
+        if (this.editName === false) {
+          var nickName = {'nickName': this.user.nickName}
+          this.$http.put('api/user/info', nickName)
+            .then(res => {
+              self.$message.success(res.data)
+            }, res => self.$message.error(res.data))
+        }
       }
     }
   }
@@ -97,10 +119,18 @@
       .name
         font-size: $larSize
         font-weight: 600
+        .editName
+          width: 120px
+        .icon-lf
+          margin-left: 10px
+        .active
+          color: #20A0FF
       li
         display: flex
         justify-content: flex-start
+        align-items: center
         margin-bottom: 10px
+        height: 30px
         .rt-desc
           width: 100px
           text-align: right

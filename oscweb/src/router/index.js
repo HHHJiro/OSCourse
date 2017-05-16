@@ -33,14 +33,28 @@ const routes = [
   },
   {
     path: '/add',
-    component: add
+    component: add,
+    meta: { requiresAuth: true }
   },
   {
-    path: '/u/:id',
+    path: '/user/:id',
     component: resolve => require(['@/components/muser_page'], resolve)
   }
 ]
-
-export default new Router({
-  routes
+const router = new Router({routes})
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!window.localStorage.getItem('osc-access-token')) {
+      next({
+        path: '/'
+        // query: { redirect: to.fullPath }
+      })
+    } else {
+      next()
+    }
+  } else {
+    next() // 确保一定要调用 next()
+  }
 })
+export default router
+

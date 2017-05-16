@@ -4,11 +4,12 @@ const SECRET = config.auth.SECRET
 const path = require('path')
 const fs = require('fs')
 const User = require('./models/user.js')
-const _ = require('lodash')
-const status = require('./status')
+// const _ = require('lodash')
+// const status = require('./status')
 
 // 签发token
 const signToken = (id) => {
+  // id=DB => _id
   const expires = Date.now() + config.auth.EXPIRES
   const token = jwt.encode({
     iss: id,
@@ -65,26 +66,19 @@ const upload = (req, res, next) => {
       req.uploadFlag = true
       req.fileName = fileName
     }
-    next()
   }
+  next()
 }
 // 更改数据库
 const editAvaPath = (req, res, next) => {
-  const type = req.type
   const avaPath = './static/img/avatar/'
   const filePath = avaPath + req.fileName
-  if (type === 'avatar') {
-    var data = {}
-    data.avatar = filePath
-    User.findById(req.id)
-      .then(user => {
-        user.save(_.assign(user,data))
-        next()
-      })
-      .catch(err => {
-        res.send(status.wrong, '更改头像失败')
-      })
-  }
+  User.update({_id: req.id}, {$set: {avatar: filePath}}, err => {
+    if (err) {
+      console.log(err)
+    }
+  })
+  next()
 }
 
 module.exports = {

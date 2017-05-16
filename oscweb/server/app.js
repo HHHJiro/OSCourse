@@ -33,14 +33,19 @@ server.get('api/echo/:name', function (req, res, next) {
   res.send(req.params)
   return next()
 })
-// 上传
+// 用户上传头像
 server.post('/api/user/avatar', Utils.authToken, Utils.upload, Utils.editAvaPath,upload.uploadSend)
 
 
 // server.get('api/users', api.getAllUserInfo)
+//注册
 server.post('api/user/add', api.userAdd)
+//登录 签发token
 server.post('api/user/auth', api.login)
+// 用户信息
 server.get('api/user/info', Utils.authToken, api.showInfo)
+// 修改用户信息
+server.put('api/user/info', Utils.authToken, api.putInfo)
 
 
 

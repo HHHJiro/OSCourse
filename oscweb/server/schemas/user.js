@@ -36,10 +36,8 @@ var UserSchema = new mongoose.Schema({
   }
 })
 
-
 //来自同学的回答解决了密码不加密的问题
 UserSchema.pre('save', function (next) {
-  // var user = this
   if (this.isNew) {
     this.meta.createAt = this.meta.updateAt = Date.now()
   } else {
@@ -72,21 +70,20 @@ UserSchema.statics = {
   },
   findById: async function(id){
     const userInfo =  await this
-      .findOne({id:id})
+      .findOne({_id: id})
       .catch(err => {
         console.log(err)
       })
     return userInfo
   },
-  findByName: async function(name){
+  findByAccount: async function(account){
     const userInfo =  await this
-      .findOne({name:name})
+      .findOne({id: account})
       .catch(err=>{
         console.log(err)
       })
     return userInfo
   }
-}
-
+} 
 
 module.exports = UserSchema
