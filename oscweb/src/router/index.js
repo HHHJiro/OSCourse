@@ -3,7 +3,8 @@ import Router from 'vue-router'
 import v2Gctn from '@/components/v2_gctn'
 import doc from '@/components/mdoc'
 import video from '@/components/mvdo'
-import add from '@/components/add_res'
+import add from '@/components/v2_madd'
+// import add from '@/components/add_res'
 // import addVdo from '@/components/add_vdo'
 import vdoView from '@/components/vdo_view'
 import docView from '@/components/doc_view'
@@ -32,7 +33,7 @@ const routes = [
     ]
   },
   {
-    path: '/add',
+    path: '/res/add',
     component: add,
     meta: { requiresAuth: true }
   },

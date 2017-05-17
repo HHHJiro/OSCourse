@@ -15,11 +15,11 @@
         <div class="step-div step_0" v-if="stepAtv === 0" key="step_0">
           <ul class="oper">
             <li @click="addDoc" key="doc">
-              <p><img src="/static/img/atl_ttl.png">添加教学文档</p>
+              <p><img src="/static/img/atl_ttl.png">添加教学资源</p>
               <img class="add" src="/static/img/add.png">
             </li>
             <li @click="addVdo" key="vdo">
-              <p><img src="/static/img/video_ttl.png">添加教学视频</p>
+              <p><img src="/static/img/video_ttl.png">添加师生微课</p>
               <img class="add" src="/static/img/add.png">
             </li>
           </ul>
@@ -37,7 +37,7 @@
               <el-input type="textarea" v-model="vdoForm.desc"></el-input>
             </el-form-item>
             <el-form-item class="form-btn">
-              <el-button type="primary" @click="subVdoFrom('vdoForm')">添加视频</el-button>
+              <el-button type="primary" @click="subVdoFrom('vdoForm')">确认上传</el-button>
               <el-button @click="rstVdoFrom('vdoForm')">重置</el-button>
             </el-form-item>
           </el-form>
@@ -191,4 +191,5 @@
   .fade-enter
     transform: translateX(20px)
     opacity: 0
+    
 </style>

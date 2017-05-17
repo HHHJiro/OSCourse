@@ -4,8 +4,16 @@ const SECRET = config.auth.SECRET
 const path = require('path')
 const fs = require('fs')
 const User = require('./models/user.js')
+const Resource = require('./models/resource.js')
+const Category = require('./models/Category.js')
 // const _ = require('lodash')
 // const status = require('./status')
+
+const fileType = {
+  'video/mp4': 'mp4',
+  'application/x-zip-compressed': 'zip',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'docx'
+}
 
 // 签发token
 const signToken = (id) => {
@@ -69,6 +77,25 @@ const upload = (req, res, next) => {
   }
   next()
 }
+const uploadRes = (req, res ,next) => {
+  for (var i in req.files) {
+    let file = req.files[i]
+    if (file.size == 0){
+      // 使用同步方式删除一个文件
+      fs.unlinkSync(file.path)
+      req.uploadFlag = false
+    } else {
+      var fileName = file.hash + '.' + fileType[file.type]
+      var target_path = path.join('../static/upload', fileName)
+      // 使用同步方式重命名一个文件
+      fs.renameSync(file.path, target_path)
+      req.uploadFlag = true
+      req.fileName = fileName
+    }
+  }
+  var truePath = './static/upload/' + fileName
+  res.send(200, {msg: '上传成功', path: truePath})
+}
 // 更改数据库
 const editAvaPath = (req, res, next) => {
   const avaPath = './static/img/avatar/'
@@ -80,10 +107,47 @@ const editAvaPath = (req, res, next) => {
   })
   next()
 }
-
+const saveToDb = (req, res) => {
+  console.log(req.body)
+  var data = req.body
+  let resource = new Resource({
+    'name': data.name,
+    'type': data.type,
+    'desc': data.desc,
+    'uploadBy': req.id,
+    'path': data.path
+  })
+  // console.log(resource)
+  resource.save((err, resource) => {
+    if(err) {
+      console.log(err)
+      res.send(400, '失败')
+    } else {
+      Category.findByName(data.category)
+      .then(category => {
+        if (category) {
+          category.resources.push(resource._id)
+          category.save((err, category) => {
+            res.send(200, 'push资源')
+          })
+        } else {
+          let category = new Category({
+            name: data.category,
+            resources: [resource._id]
+          })
+          category.save((err,category) => {
+            res.send(200, '新增资源')
+          })
+        }
+      })
+    }
+  })
+}
 module.exports = {
   signToken,
   authToken,
   upload,
-  editAvaPath
+  editAvaPath,
+  uploadRes,
+  saveToDb
 }

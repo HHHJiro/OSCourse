@@ -35,7 +35,7 @@ export default {
           this.$router.push('/user/' + self.user.id)
           break
         case 'add':
-          this.$router.push('/add')
+          this.$router.push('/res/add')
           break
       }
     },

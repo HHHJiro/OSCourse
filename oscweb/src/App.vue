@@ -5,7 +5,9 @@
       <!-- 路由匹配到的组件将渲染在这里 -->
     <div class="hr"></div>
     <div class="container">
-      <router-view ></router-view>
+      <transition name="fadeUp" mode="out-in">
+        <router-view ></router-view>
+      </transition>
     </div>
     <footer><gft></gft></footer>
   </div>
@@ -83,4 +85,14 @@ export default {
     margin: $marTop $marLR $marBtm
     background-color: #fff
     min-height: 400px
+
+  .fadeUp-leave-active, .fade-enter
+    transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0)
+    transform: translateY(-50px)
+    opacity: 0
+  .fadeUp-enter-active
+    transition: all .3s ease
+  .fadeUp-enter
+    transform: translateY(50px)
+    opacity: 0
 </style>

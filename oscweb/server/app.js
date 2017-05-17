@@ -35,7 +35,10 @@ server.get('api/echo/:name', function (req, res, next) {
 })
 // 用户上传头像
 server.post('/api/user/avatar', Utils.authToken, Utils.upload, Utils.editAvaPath,upload.uploadSend)
-
+// 用户上传文件
+server.post('api/resource/server', Utils.authToken, Utils.uploadRes)
+// 用户将上传的文件存入数据库
+server.post('api/resource/db', Utils.authToken, Utils.saveToDb)
 
 // server.get('api/users', api.getAllUserInfo)
 //注册
