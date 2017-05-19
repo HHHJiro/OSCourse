@@ -1,6 +1,5 @@
 <template>
   <div id="m-vdo">
-    <p>这里是视频</p>
     <router-view ></router-view>
   </div>
 </template>
@@ -15,6 +14,5 @@ export default {
 </script>
 <style lang="sass" scoped>
   #m-vdo
-  	p
-    	text-align: center
+    margin-top: 15px
 </style>

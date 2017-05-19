@@ -8,10 +8,10 @@
       <el-form-item label="上传类型" prop="type">
       <el-select v-model="uploadForm.type" placeholder="选择上传的类型">
           <el-option label="师生微课" value="micro"></el-option>
-          <el-option label="教学资源" value="teachRes"></el-option>
+          <el-option label="教学资源" value="teach"></el-option>
           <div class="role" v-if="role >= 10">
-            <el-option label="教学视频" value="teachVdo"></el-option>
-            <el-option label="教学大纲" value="teachOutLine"></el-option>
+            <el-option label="教学视频" value="video"></el-option>
+            <el-option label="教学大纲" value="outline"></el-option>
           </div>
         </el-select>
       </el-form-item>
@@ -93,12 +93,18 @@ export default {
     beforeUpload: function (file) {
       var type = this.uploadForm.type
       var filType = file.type
-      console.log(filType)
       var types = {
         'micro': ['video/mp4'],
-        'teachRes': ['video/mp4', 'application/x-zip-compressed'],
-        'teachVdo': ['video/mp4'],
-        'teachOutLine': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        'teach': ['video/mp4',
+          'application/x-zip-compressed',
+          'application/msword',
+          'application/ vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/vnd.ms-powerpoint',
+          'application/ vnd.openxmlformats-officedocument.presentationml.presentation',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ],
+        'video': ['video/mp4'],
+        'outline': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
       }
       if (type === '') {
         this.$message.error('选择上传类型后再上传')

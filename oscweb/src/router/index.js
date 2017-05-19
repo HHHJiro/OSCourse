@@ -29,7 +29,7 @@ const routes = [
     name: 'video',
     component: video,
     children: [
-        { path: 'teach', component: resolve => require(['@/components/mvdo_list'], resolve) },
+        { path: 'video', component: resolve => require(['@/components/mvdo_list'], resolve) },
         { path: 'micro', component: resolve => require(['@/components/mvdo_list'], resolve) }
     ]
   },
@@ -45,6 +45,10 @@ const routes = [
   {
     path: '/user/:id',
     component: resolve => require(['@/components/muser_page'], resolve)
+  },
+  {
+    path: '/teach',
+    component: resolve => require(['@/components/mvdo_list'], resolve)
   }
 ]
 const router = new Router({routes})

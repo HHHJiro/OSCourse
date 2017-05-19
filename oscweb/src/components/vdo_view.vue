@@ -1,6 +1,9 @@
 <template>
   <div id="vdo-view">
-    <div class="view-wrap">
+    <div class="doc-view" v-if="isDoc">
+      <iframe src="https://docs.google.com/viewer?url=http://opsbja25o.bkt.clouddn.com/http://opsbja25o.bkt.clouddn.com/97f0e6d4328ef63e35fca1300abd86ec41de6864.ppt&embedded=true" width="100%" height="780" style="border: none;"></iframe>
+    </div>
+    <div class="view-wrap" v-else>
       <div class="vdo-wrap">
         <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">{{video.name}}</span></p>
         <video width="960" height="630" controls autoplay preload>
@@ -21,7 +24,7 @@
       </div>
     </div>
     <div class="desc-wrap">
-      <p class="desc-text"><span class="desc-tag"><el-tag type="primary">视频简介</el-tag></span>{{video.desc}}</p>
+      <p class="desc-text"><span class="desc-tag"><el-tag type="primary">简介</el-tag></span>{{video.desc}}</p>
     </div>
 <!--     <div class="hr"></div>
     <div class="comments-wrap">
@@ -36,7 +39,8 @@
 export default {
   data () {
     return {
-      video: null
+      video: null,
+      isDoc: false
     }
   },
   created () {
@@ -52,6 +56,7 @@ export default {
       this.$http.get('api/video/' + id)
         .then(res => {
           this.video = res.data.video
+          this.isDoc = res.data.fileType === 'doc'
         }, res => {
           this.$message.error('失败' + res)
         })

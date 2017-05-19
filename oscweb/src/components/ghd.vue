@@ -12,12 +12,13 @@
           <el-menu-item index="/" >首页</el-menu-item>
           <el-submenu index="/video" class="no-btmbdr">
             <template slot="title" class="sub-tit">视频</template>
-            <el-menu-item index="/vdo/teach">教学视频</el-menu-item>
+            <el-menu-item index="/vdo/video">教学视频</el-menu-item>
             <el-menu-item index="/vdo/micro">师生微课</el-menu-item>
           </el-submenu>
           <el-menu-item index="/outline" >教学大纲</el-menu-item>
           <el-menu-item index="/team" >教学团队</el-menu-item>
-          <el-menu-item index="/resources" >教学资源</el-menu-item>
+          <el-menu-item index="/teach" >教学资源</el-menu-item>
+          <el-menu-item index="/cala" >教学日历</el-menu-item>
           <el-menu-item index="/community" @click="getInfo">讨论区</el-menu-item>
         </el-menu>
         <div class="login">
@@ -83,6 +84,7 @@ export default {
         self.$set(self.isAuth, 'user', data)
       }, res => {
         console.log('oh noAuth')
+        window.localStorage.removeItem('osc-access-token')
       })
     }
   }
@@ -93,7 +95,7 @@ export default {
   $topMarLR: 96px
   $topWdh: 1160px
   $ulWdh: 620px
-  $ulMarLR: 40px
+  $ulMarLR: 15px
   $loginWth: 100px
   $liClr: #222
   $liHvrClr: rgba(255,255,255,0.24)

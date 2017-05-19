@@ -10,13 +10,13 @@
             <span class="upload-time">{{item.meta.updateAt | formDate}}</span>
           </div>
           <div class="vdo-ctn">
-             <router-link :to="'/video/' + item._id" :video="item.name">
-              <h2 class="title">{{item.name}}</h2>
-             </router-link>
+             <!-- <router-link :to="'/video/' + item._id" :video="item.name"> -->
+              <h2 class="title"><router-link :to="'/video/' + item._id" :video="item.name">{{item.name}}</router-link></h2>
+             <!-- </router-link> -->
             <p class="desc">{{item.desc}}</p>
           </div>
           <div class="vdo-ft">
-            <el-tag type="success">教学视频</el-tag>
+            <el-tag type="success">{{tag}}</el-tag>
             <img src="/static/img/play.png" class="icon icon-wth">
             <span class="num num-wth">{{item.pv}}</span>
             <img src="/static/img/download.png" class="icon icon-dwn">
@@ -34,22 +34,16 @@
       return {
         videos: [],
         type: '',
-        types: {
-          'teach': 'teachVdo',
-          'micro': 'micro'
-        },
-        path: ''
+        path: '',
+        tag: '',
+        tags: {
+          'video': '教学视频',
+          'micro': '师生微课',
+          'teach': '教学资源'
+        }
       }
     },
     mounted () {
-      // var self = this
-      // var type = this.types[this.path]
-      // this.$http.get('api/resource/' + type)
-      //   .then(res => {
-      //     self.videos = res.data.resrouces
-      //   }, res => {
-      //     console.log('wrong')
-      //   })
     },
     created () {
       this.getType()
@@ -61,14 +55,12 @@
       getType () {
         this.path = this.$route.path.split('/').pop()
         this.getInfo()
-        // console.log(this.$route.path.split('/').pop())
       },
       getInfo () {
-        var self = this
-        var type = this.types[this.path]
-        this.$http.get('api/resource/' + type)
+        this.$http.get('api/resource/' + this.path)
           .then(res => {
-            self.videos = res.data.resrouces
+            this.videos = res.data.resrouces
+            this.tag = this.tags[this.path]
           }, res => {
             console.log('wrong')
           })
@@ -106,8 +98,8 @@
           align-items: center
           font-size: 13px
           .avatar
-            width: 32px
-            heignt: 32px
+            width: 30px
+            heignt: 30px
             margin: 0 5px
             img
               border-radius: 50%
@@ -119,11 +111,12 @@
         .vdo-ctn
           height: 100px
           .title
-            font-size: 18px
-            line-height: 27px
-            color: $baseClr
-            &:hover
-              color: #58B7FF
+            a
+              font-size: 18px
+              line-height: 27px
+              color: $baseClr
+              &:hover
+                color: #58B7FF
           .desc
             width: 100%
             white-space: pre-wrap
