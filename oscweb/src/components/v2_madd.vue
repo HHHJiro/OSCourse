@@ -5,6 +5,16 @@
       <el-form-item label="文件名称" prop="name">
       <el-input v-model="uploadForm.name"></el-input>
       </el-form-item>
+      <el-form-item label="上传类型" prop="type">
+      <el-select v-model="uploadForm.type" placeholder="选择上传的类型">
+          <el-option label="师生微课" value="micro"></el-option>
+          <el-option label="教学资源" value="teachRes"></el-option>
+          <div class="role" v-if="role >= 10">
+            <el-option label="教学视频" value="teachVdo"></el-option>
+            <el-option label="教学大纲" value="teachOutLine"></el-option>
+          </div>
+        </el-select>
+      </el-form-item>
       <el-form-item label="上传文件" prop="path">
       <el-upload
       class="upload-demo"
@@ -25,16 +35,6 @@
       <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
-      </el-form-item>
-      <el-form-item label="上传类型" prop="type">
-      <el-select v-model="uploadForm.category" placeholder="选择上传的类型">
-          <el-option label="师生微课" value="micro"></el-option>
-          <el-option label="教学资源" value="teachRes"></el-option>
-          <div class="role" v-if="role >= 10">
-            <el-option label="教学视频" value="teachVdo"></el-option>
-            <el-option label="教学大纲" value="teachOutLine"></el-option>
-          </div>
-        </el-select>
       </el-form-item>
       <el-form-item label="文件描述" prop="desc"> 
       <el-input type="textarea" v-model="uploadForm.desc"></el-input>
@@ -59,7 +59,7 @@ export default {
         name: '',
         path: '',
         desc: '',
-        category: ''
+        type: ''
       },
       role: 0,
       authHeader: {},
@@ -76,7 +76,7 @@ export default {
         { required: true, message: '请输入视频描述', trigger: 'blur' },
         { min: 10, message: '长度大于 10 个字符', trigger: 'blur, change' }
         ],
-        category: [
+        type: [
         { required: true, message: '请选择上传类型', trigger: 'change' }
         ]
       }
@@ -91,20 +91,20 @@ export default {
   },
   methods: {
     beforeUpload: function (file) {
-      var category = this.uploadForm.category
+      var type = this.uploadForm.type
       var filType = file.type
       console.log(filType)
-      var categorys = {
+      var types = {
         'micro': ['video/mp4'],
         'teachRes': ['video/mp4', 'application/x-zip-compressed'],
         'teachVdo': ['video/mp4'],
         'teachOutLine': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
       }
-      if (category === '') {
+      if (type === '') {
         this.$message.error('选择上传类型后再上传')
         return false
       } else {
-        const isType = categorys[category].includes(filType)
+        const isType = types[type].includes(filType)
         console.log(isType)
         if (!isType) {
           this.$message.error('上传格式不正确!')

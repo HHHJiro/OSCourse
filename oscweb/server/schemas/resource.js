@@ -5,13 +5,14 @@ var ObjectId = Schema.ObjectId
 var ResourceSchema = new mongoose.Schema({
   name: String,
   desc: String,
+  type: String,
   uploadBy: {type: ObjectId, ref: 'User'},
   meta: {
     createAt: {type: Date, default: Date.now()},
     updateAt: {type: Date, default: Date.now()}
   },
   path: String,
-  hits: {type: Number, default: 0},
+  pv: {type: Number, default: 0},
   download: {type: Number, default: 0}
 })
 

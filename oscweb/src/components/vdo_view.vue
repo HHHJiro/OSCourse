@@ -2,37 +2,59 @@
   <div id="vdo-view">
     <div class="view-wrap">
       <div class="vdo-wrap">
-        <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">银河护卫队2官方预告</span></p>
-        <embed src="http://player.youku.com/player.php/sid/XMjU1Mjk3MTQ4MA==/v.swf" allowFullScreen='true' quality='high' width='960' height='630' align='left' allowScriptAccess='always' type='application/x-shockwave-flash'></embed>
+        <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">{{video.name}}</span></p>
+        <video width="960" height="630" controls autoplay preload>
+          <source :src="video.path" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
       </div>
       <div class="info-wrap">
         <p class="title info-tag"><el-tag type="success">视频信息</el-tag></p>
         <div class="info-text">
           <ul class="info-textag">
-            <li><el-tag type="primary">观看：123</el-tag></li>
-            <li><el-tag type="warning">留言：321</el-tag></li>
-            <li><el-tag type="primary">上传者：Star Lord</el-tag></li>
-            <li><el-tag type="warning">上传时间：1天前</el-tag></li>
+            <li><el-tag type="primary">观看：{{video.pv}}</el-tag></li>
+            <!-- <li><el-tag type="warning">留言：321</el-tag></li> -->
+            <li><el-tag type="primary">上传者：{{video.uploadBy.nickName}}</el-tag></li>
+            <li><el-tag type="warning">上传时间：{{video.meta.createAt | formDate}}</el-tag></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="desc-wrap">
-      <p class="desc-text"><span class="desc-tag"><el-tag type="primary">视频简介</el-tag></span>伴随着“劲歌金曲第二辑”的背景音乐，银河护卫队奔向更遥远宇宙星域，将穿越宇宙继续团队冒险之旅。护卫队成员们发现了“星爵”——彼得·奎尔（克里斯·帕拉特 饰）的身世之谜，他们必须要为他们的新家庭而战。随着漫威电影宇宙的扩张，从前的敌人将变成了新盟友，更多经典漫画中的人气角色将会为我们的英雄们伸出援手。</p>
+      <p class="desc-text"><span class="desc-tag"><el-tag type="primary">视频简介</el-tag></span>{{video.desc}}</p>
     </div>
-    <div class="hr"></div>
+<!--     <div class="hr"></div>
     <div class="comments-wrap">
       <p>留言模块</p>
       <ul>
         <li></li>
       </ul>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
 export default {
   data () {
     return {
+      video: null
+    }
+  },
+  created () {
+    this.getInfo()
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'getInfo'
+  },
+  methods: {
+    getInfo () {
+      var id = this.$route.params.id
+      this.$http.get('api/video/' + id)
+        .then(res => {
+          this.video = res.data.video
+        }, res => {
+          this.$message.error('失败' + res)
+        })
     }
   }
 }

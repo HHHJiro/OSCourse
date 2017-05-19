@@ -5,7 +5,7 @@ var ObjectId = Schema.ObjectId
 
 var CatetorySchema = new Schema({
   name: String,
-  resources: [{type: ObjectId, ref: 'Resourcs'}],
+  resources: [{type: ObjectId, ref: 'Resource'}],
   meta:{
     createAt:{
       type:Date,
@@ -44,10 +44,14 @@ CatetorySchema.statics = {
       .sort('meta.updateAt')
       .exec(cb)
   },
-  findByName: async (name) => {
-    return this
-      .findOne({name:name})
+  findByName: async function(name) {
+    const category = await this
+      .findOne({name: name})
       .sort('meta.updateAt')
+      .catch(err=>{
+        console.log(err)
+      })
+    return category
   }
 }
 

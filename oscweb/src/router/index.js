@@ -25,12 +25,17 @@ const routes = [
     ]
   },
   {
-    path: '/video',
+    path: '/vdo',
     name: 'video',
     component: video,
     children: [
-       { path: ':vid', component: vdoView }
+        { path: 'teach', component: resolve => require(['@/components/mvdo_list'], resolve) },
+        { path: 'micro', component: resolve => require(['@/components/mvdo_list'], resolve) }
     ]
+  },
+  {
+    path: '/video/:id',
+    component: vdoView
   },
   {
     path: '/res/add',

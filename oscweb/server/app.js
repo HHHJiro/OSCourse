@@ -39,8 +39,12 @@ server.post('/api/user/avatar', Utils.authToken, Utils.upload, Utils.editAvaPath
 server.post('api/resource/server', Utils.authToken, Utils.uploadRes)
 // 用户将上传的文件存入数据库
 server.post('api/resource/db', Utils.authToken, Utils.saveToDb)
+// 查看某类型的文档
+server.get('api/resource/:type', Utils.getType)
 
 // server.get('api/users', api.getAllUserInfo)
+//查看某个video
+server.get('api/video/:id', Utils.getResInfo)
 //注册
 server.post('api/user/add', api.userAdd)
 //登录 签发token

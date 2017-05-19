@@ -5,8 +5,7 @@ const path = require('path')
 const fs = require('fs')
 const User = require('./models/user.js')
 const Resource = require('./models/resource.js')
-const Category = require('./models/Category.js')
-// const _ = require('lodash')
+const _ = require('lodash')
 // const status = require('./status')
 
 const fileType = {
@@ -93,12 +92,29 @@ const uploadRes = (req, res ,next) => {
       req.fileName = fileName
     }
   }
-  var truePath = './static/upload/' + fileName
+  var truePath = '/static/upload/' + fileName
   res.send(200, {msg: '上传成功', path: truePath})
 }
+//找到资源信息
+const getResInfo = (req, res, next) => {
+  const id = req.params.id
+  Resource.update({_id:id}, {$inc: {pv: 1}})
+    .then(data => {
+      Resource.findOne({_id:id})
+        .populate('uploadBy', 'nickName')
+        .exec((err, video) => {
+          if (err) {
+            res.send(400, err)
+          } else {
+            res.send(200, {video: video})
+          }
+        })
+    })
+}
+
 // 更改数据库
 const editAvaPath = (req, res, next) => {
-  const avaPath = './static/img/avatar/'
+  const avaPath = '/static/img/avatar/'
   const filePath = avaPath + req.fileName
   User.update({_id: req.id}, {$set: {avatar: filePath}}, err => {
     if (err) {
@@ -107,47 +123,37 @@ const editAvaPath = (req, res, next) => {
   })
   next()
 }
+//保存到数据库
 const saveToDb = (req, res) => {
-  console.log(req.body)
   var data = req.body
-  let resource = new Resource({
-    'name': data.name,
-    'type': data.type,
-    'desc': data.desc,
-    'uploadBy': req.id,
-    'path': data.path
-  })
+  let _resource = _.assign(data,{uploadBy: req.id})
+  let resource = new Resource(_resource)
   // console.log(resource)
   resource.save((err, resource) => {
     if(err) {
       console.log(err)
       res.send(400, '失败')
     } else {
-      Category.findByName(data.category)
-      .then(category => {
-        if (category) {
-          category.resources.push(resource._id)
-          category.save((err, category) => {
-            res.send(200, 'push资源')
-          })
-        } else {
-          let category = new Category({
-            name: data.category,
-            resources: [resource._id]
-          })
-          category.save((err,category) => {
-            res.send(200, '新增资源')
-          })
-        }
-      })
+      res.send(200, '成功')
     }
   })
 }
+const getType = (req, res) => {
+  let type = req.params
+  Resource.find(type)
+    .populate('uploadBy', ['nickName', 'avatar'])
+    .exec((err, resrouces) => {
+      res.send(200, {resrouces: resrouces, type: type})
+    })
+}
+
 module.exports = {
   signToken,
   authToken,
   upload,
   editAvaPath,
   uploadRes,
-  saveToDb
+  saveToDb,
+  getType,
+  getResInfo
 }

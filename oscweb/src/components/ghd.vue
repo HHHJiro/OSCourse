@@ -13,7 +13,7 @@
           <el-submenu index="/video" class="no-btmbdr">
             <template slot="title" class="sub-tit">视频</template>
             <el-menu-item index="/vdo/teach">教学视频</el-menu-item>
-            <el-menu-item index="/vdo/micro ">师生微课</el-menu-item>
+            <el-menu-item index="/vdo/micro">师生微课</el-menu-item>
           </el-submenu>
           <el-menu-item index="/outline" >教学大纲</el-menu-item>
           <el-menu-item index="/team" >教学团队</el-menu-item>
