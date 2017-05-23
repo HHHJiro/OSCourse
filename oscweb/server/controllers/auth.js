@@ -1,5 +1,7 @@
 const User = require('../models/user.js')
-const Utils = require('../utils')
+const jwt = require('jwt-simple') // 引入jwt
+const config = require('../config')
+const SECRET = config.auth.SECRET
 
 //登陆
 const login = async (req, res, next) => {
@@ -10,7 +12,7 @@ const login = async (req, res, next) => {
     if(!isMatch){
       res.send(401, {info: '密码错误'})
     } else { // 如果密码正确
-      const token = Utils.signToken(user._id)
+      const token = signToken(user._id)
       res.send(200, {info: `欢迎用户:${params.id}`,token: token})
     }
   } else {
@@ -18,28 +20,6 @@ const login = async (req, res, next) => {
   }
 }
 
-const getUserInfo = async  (req, res, next) => {
-  const params = req.params
-  let id = params.id // 获取url里传过来的参数里的id
-  // await “同步”地返回查询结果
-  const result = await User.findByAccount(id).catch(err => {console.log(err)})
-  res.send(200,result)
-  return next()
-}
-//查看个人信息
-const showInfo = async (req, res, next) => {
-  const id = req.id
-  const result = await User.findById(id).catch(err => console.log(err))
-  res.send(200,{result})
-  return next()
-}
-
-// 显示所有的人
-const getAllUserInfo = async (req, res, next) => {
-  const result = await User.fetch().catch(function (err){console.log(err)})
-  res.send(result)
-  return next()
-}
 //注册
 const userAdd = (req, res, next) => {
   const params = req.body
@@ -54,29 +34,59 @@ const userAdd = (req, res, next) => {
       res.status(500)
       res.send('error addUser')
     } else {
-      const token = Utils.signToken(params.id)
+      const token = signToken(params.id)
       res.send(200, {token: token})
       return next()
     }
   })
 }
 
-//修改用户信息
-const putInfo = (req, res) => {
-  const nickName = req.body
-  User.findOneAndUpdate({_id: req.id}, nickName, {upsert:true}, function(err, doc){
-    if (err) {
-      res.send(400, '修改失败')
+// 签发token
+const signToken = (id) => {
+  // id=DB => _id
+  const expires = Date.now() + config.auth.EXPIRES
+  const token = jwt.encode({
+    iss: id,
+    exp: expires
+  }, SECRET)
+  return token
+}
+
+// 验证token
+const verifyToken = (req, res, next) => {
+  const token = (req.body && req.body.access_token) || (req.query && req.query.access_token) || req.headers['osc-access-token']
+  if (token) {
+    try {
+      const decoded = jwt.decode(token, SECRET)
+      // 此处可以对decoded的token做各种验证，比如是否含有userName，userName是否合法等
+      if (decoded.exp <= Date.now()) {
+        // 此处验证token是否过期
+        res.send(403, {
+          'ForbiddenError': 'Access token has expired.'
+        })
+      }
+      // 当所有验证条件都通过时，返回给路由处理，还可在请求上附加信息
+      req.id = decoded.iss
+      next()
+    } catch (err) {
+      res.send(500, {
+        'InternalServerError': 'Can not decode given token.'
+      })
     }
-  })
-  res.send(201, '修改成功')
+  } else {
+    res.send(400, {
+      'BadRequestError': 'Do not have a valid token.'
+    })
+  }
 }
 
 module.exports = {
   login,
-  getUserInfo,
-  getAllUserInfo,
+  // getUserInfo,
+  // getAllUserInfo,
   userAdd,
-  showInfo,
-  putInfo
+  // showInfo,
+  // putInfo,
+  signToken,
+  verifyToken
 }

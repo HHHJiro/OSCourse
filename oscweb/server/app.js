@@ -2,10 +2,11 @@ const restify = require('restify')
 const plugins = require('restify-plugins')
 const config = require('./config.js')
 const mongoose = require('mongoose')
-const api = require('./controllers/auth')
-const Utils = require('./utils')
+const auth = require('./controllers/auth')
+const user = require('./controllers/user')
+// const Utils = require('./utils')
 const path = require('path')
-const upload = require('./controllers/upload')
+const file = require('./controllers/file')
 
 const server = restify.createServer({
   name: 'osCourseServer',
@@ -29,30 +30,32 @@ server.use(restify.bodyParser({
 
 mongoose.connect(config.db.dbUrl)
 mongoose.Promise = require('bluebird')
+//测试api
 server.get('api/echo/:name', function (req, res, next) {
   res.send(req.params)
   return next()
 })
+
 // 用户上传头像
-server.post('/api/user/avatar', Utils.authToken, Utils.upload, Utils.editAvaPath,upload.uploadSend)
+server.post('api/user/avatar', auth.verifyToken, file.uploadAvatar, file.editAvaPath,file.uploadSend)
 // 用户上传文件
-server.post('api/resource/server', Utils.authToken, Utils.uploadRes)
+server.post('api/resource/server', auth.verifyToken, file.uploadRes)
 // 用户将上传的文件存入数据库
-server.post('api/resource/db', Utils.authToken, Utils.saveToDb)
+server.post('api/resource/db', auth.verifyToken, file.saveToDb)
 // 查看某类型的文档
-server.get('api/resource/:type', Utils.getType)
+server.get('api/resource/:type', file.getType)
 
 // server.get('api/users', api.getAllUserInfo)
 //查看某个video
-server.get('api/video/:id', Utils.getResInfo)
+server.get('api/video/:id', file.getResInfo)
 //注册
-server.post('api/user/add', api.userAdd)
+server.post('api/user/add', auth.userAdd)
 //登录 签发token
-server.post('api/user/auth', api.login)
+server.post('api/user/auth', auth.login)
 // 用户信息
-server.get('api/user/info', Utils.authToken, api.showInfo)
+server.get('api/user/info', auth.verifyToken, user.showInfo)
 // 修改用户信息
-server.put('api/user/info', Utils.authToken, api.putInfo)
+server.put('api/user/info', auth.verifyToken, user.putInfo)
 
 
 

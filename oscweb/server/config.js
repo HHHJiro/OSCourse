@@ -8,7 +8,12 @@ const CONFIG = {
     nickName: '匿名用户',
     avatar: '/static/img/avatar/default.png'
   },
-  db:{dbUrl: 'mongodb://localhost/socouresV2'}
+  db:{dbUrl: 'mongodb://localhost/socouresV2'},
+  qiniu: {
+    ACCESS_KEY: 'GrmYZ5oBOT7Vpqb1iR85FVgLxUF-PMiSNY2Xc0UG',
+    SECRET_KEY: 'iluRu-FT_BGMCcPsGcVG9znipyDdZeYTH2zkygAo',
+    bucket: 'online-office'
+  }
 }
 
 module.exports = CONFIG
