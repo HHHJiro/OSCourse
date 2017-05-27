@@ -45,9 +45,11 @@ server.post('api/resource/db', auth.verifyToken, file.saveToDb)
 // 查看某类型的文档
 server.get('api/resource/:type', file.getType)
 
+server.get('api/resource/uploadBy/:id', file.getOneUploads)
+
 // server.get('api/users', api.getAllUserInfo)
 //查看某个video
-server.get('api/video/:id', file.getResInfo)
+server.get('api/file/:id', file.getResInfo)
 //注册
 server.post('api/user/add', auth.userAdd)
 //登录 签发token

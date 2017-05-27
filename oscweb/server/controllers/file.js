@@ -55,6 +55,15 @@ const editAvaPath = (req, res, next) => {
   next()
 }
 
+//个人主页查看个人的上传
+const getOneUploads = (req, res) => {
+  let userId = req.params.id
+  Resource.find({uploadBy: userId})
+    .exec((err, resources) => {
+      res.send(200, resources)
+    })
+}
+
 //上传资源
 const uploadRes = (req, res ,next) => {
   var isDoc = false
@@ -153,7 +162,7 @@ const saveToDb = (req, res) => {
 const getType = (req, res) => {
   let type = req.params
   Resource.find(type)
-    .populate('uploadBy', ['nickName', 'avatar'])
+    .populate('uploadBy', ['nickName', 'avatar', 'role'])
     .exec((err, resrouces) => {
       res.send(200, {resrouces: resrouces})
     })
@@ -185,5 +194,6 @@ module.exports = {
   getResInfo,
   editAvaPath,
   saveToDb,
-  getType
+  getType,
+  getOneUploads
 }

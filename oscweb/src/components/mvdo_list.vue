@@ -10,13 +10,12 @@
             <span class="upload-time">{{item.meta.updateAt | formDate}}</span>
           </div>
           <div class="vdo-ctn">
-             <!-- <router-link :to="'/video/' + item._id" :video="item.name"> -->
-              <h2 class="title"><router-link :to="'/video/' + item._id" :video="item.name">{{item.name}}</router-link></h2>
-             <!-- </router-link> -->
+              <h2 class="title"><router-link :to="'/file/' + item._id" :video="item.name">{{item.name}}</router-link></h2>
             <p class="desc">{{item.desc}}</p>
           </div>
           <div class="vdo-ft">
-            <el-tag type="success">{{tag}}</el-tag>
+            <el-tag type="success" class="tag">{{tag}}</el-tag>
+            <el-tag type="primary" class="tag">{{item.uploadBy.role | formRole}}</el-tag>
             <img src="/static/img/play.png" class="icon icon-wth">
             <span class="num num-wth">{{item.pv}}</span>
             <img src="/static/img/download.png" class="icon icon-dwn">
@@ -36,6 +35,7 @@
         type: '',
         path: '',
         tag: '',
+        role: '',
         tags: {
           'video': '教学视频',
           'micro': '师生微课',
@@ -132,6 +132,8 @@
             margin: 0 10px
           .num
             font-size: 12px
+  .tag
+    margin: 0 5px
   img
     width: 100%
 </style>

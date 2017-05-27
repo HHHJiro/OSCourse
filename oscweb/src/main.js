@@ -13,6 +13,9 @@ Vue.use(ElementUI)
 Vue.use(VueAxios, axios)
 Vue.prototype.fun = fun
 Vue.filter('formDate', fun.formDate)
+Vue.filter('formType', fun.formType)
+Vue.filter('fileType', fun.fileType)
+Vue.filter('formRole', fun.formRole)
 axios.interceptors.request.use(function (req) {
   const AUTH_TOKEN = window.localStorage.getItem('osc-access-token')
   if (AUTH_TOKEN) {

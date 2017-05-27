@@ -54,7 +54,27 @@ const formDate =  (t, type = 2) => {
     return timeSpanStr
   }
 }
+//版块
+const formType = (type) => {
+  let typeTrans = {
+    'micro': '师生微课',
+    'teach': '教学资源',
+    'video': '教学视频'
+  }
+  return typeTrans[type]
+}
+//等级
+const formRole = (role) => {
+  let result = role >= 10 ? '教师' : '同学'
+  return result
+}
+const fileType = (path) => {
+  return path.split('.').pop()
+}
 export default {
 	getInfo,
-	formDate
+	formDate,
+  formType,
+  fileType,
+  formRole
 }

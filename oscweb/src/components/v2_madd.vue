@@ -98,6 +98,7 @@ export default {
         'teach': ['video/mp4',
           'application/x-zip-compressed',
           'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           'application/ vnd.openxmlformats-officedocument.wordprocessingml.document',
           'application/vnd.ms-powerpoint',
           'application/ vnd.openxmlformats-officedocument.presentationml.presentation',
@@ -112,8 +113,16 @@ export default {
       } else {
         const isType = types[type].includes(filType)
         console.log(isType)
+        if (filType !== 'video/mp4' && filType !== 'application/x-zip-compressed') {
+          const isLt1M = file.size / 1024 / 1024 < 1
+          if (!isLt1M) {
+            this.$message.error('上传文件应该小于1M！')
+            return false
+          }
+        }
         if (!isType) {
           this.$message.error('上传格式不正确!')
+          return false
         }
         return isType
       }

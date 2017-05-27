@@ -31,30 +31,123 @@
         </ul>
       </div>
     </div>
+    <div class="page-ctn">
+      <p class="m-upload">
+      <i class="el-icon-upload icon-style"></i>
+        <span class="upload-text">我的上传</span>
+      <el-button-group class="upload-btns">
+        <el-button type="primary" size="small" @click="refreshUpload">刷新</el-button>
+        <el-button type="primary" size="small" @click="upload">我要上传</el-button>
+      </el-button-group>
+      </p>
+       <el-table
+    :data="uploads"
+    :default-sort = "{prop: 'date', order: 'descending'}"
+    v-loading="refreshFlag"
+    element-loading-text="拼命加载中"
+    border
+    style="width: 100%">
+    <el-table-column
+      label="上传日期"
+      prop="date"
+      :resizable="!isTrue"
+      sortable
+      width="150">
+      <template scope="scope">
+        <el-icon name="time"></el-icon>
+        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+      </template>
+    </el-table-column>
+<el-table-column
+      label="文件名称"
+      :resizable="!isTrue"
+      width="180">
+      <template scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>文件描述: {{ scope.row.desc }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag :type="tagSecType[scope.row.type]">{{ scope.row.name }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="文件类型"
+      :resizable="!isTrue"
+      width="100">
+      <template scope="scope">
+      <el-tag >{{scope.row.path | fileType}}</el-tag>
+      </template>
+    </el-table-column>
+        <el-table-column
+      label="所属版块"
+      :resizable="!isTrue"
+      width="120"
+      prop="type"
+        :filters="section"
+        :filter-method="filterType"
+        filter-placement="bottom-end"
+      class="pointer"
+      >
+      <template scope="scope">
+      <el-tag :type="tagSecType[scope.row.type]">{{ scope.row.type | formType}}</el-tag>
+      </template>
+    </el-table-column>
+            <el-table-column
+            :resizable="!isTrue"
+      label="浏览人数"
+      prop="pv"
+      :sortable="isTrue"
+      width="120">
+      <template scope="scope">
+      <el-tag type="danger">{{scope.row.pv}}人</el-tag>
+      </template>
+    </el-table-column>
+    <el-table-column label="操作" :resizable="!isTrue">
+      <template scope="scope">
+        <el-button
+          size="small"
+          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        <el-button
+          size="small"
+          type="danger"
+          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+    </div>
   </div>
 </template>
 <script>
   export default {
     data () {
       return {
-        user: {},
         infoShow: false,
+        isTrue: true,
+        editName: false,
+        refreshFlag: false,
+        user: {},
+        section: [
+          { text: '师生微课', value: 'micro' },
+          { text: '教学资源', value: 'teach' },
+          { text: '教学视频', value: 'video' }
+        ],
         imageUrl: '',
         iconEdit: {
           edit: 'el-icon-edit',
           marLf: 'icon-lf'
         },
-        editName: false,
-        authHeader: {}
+        authHeader: {},
+        tagSecType: {
+          'micro': 'success',
+          'teach': 'primary',
+          'video': 'warning'
+        },
+        uploads: []
       }
     },
     created () {
-      var self = this
-      this.authHeader['osc-access-token'] = localStorage.getItem('osc-access-token')
-      this.fun.getInfo(self).then(data => {
-        self.user = data
-        self.infoShow = true
-      })
+      this.getUploads()
     },
     filters: {
       roleFormat: function (val) {
@@ -63,7 +156,7 @@
         } else if (val >= 10) {
           return '教师'
         } else {
-          return '学生^_^'
+          return '同学'
         }
       }
     },
@@ -93,6 +186,50 @@
               self.$message.success(res.data)
             }, res => self.$message.error(res.data))
         }
+      },
+      filterType (value, row) {
+        return row.type === value
+      },
+      getUploads () {
+        var self = this
+        this.authHeader['osc-access-token'] = localStorage.getItem('osc-access-token')
+        this.fun.getInfo(self)
+        .then(data => {
+          self.user = data
+          self.infoShow = true
+          return data
+        })
+        .then(data => {
+          self.getSelfUploads(data)
+        })
+      },
+      getSelfUploads (user) {
+        var self = this
+        this.$http.get('api/resource/uploadBy/' + user._id)
+        .then(res => {
+          this.uploads = res.data
+          this.uploads.map(item => {
+            item.date = item.meta.createAt.substr(0, 10)
+          })
+        })
+        .then(res => {
+          setTimeout(() => {
+            self.refreshFlag = false
+          }, 500)
+        })
+      },
+      refreshUpload () {
+        this.refreshFlag = true
+        this.getSelfUploads(this.user)
+      },
+      upload () {
+        this.$router.push('/res/add')
+      },
+      handleEdit (index, row) {
+        console.log(index, row)
+      },
+      handleDelete (index, row) {
+        console.log(index, row)
       }
     }
   }
@@ -108,6 +245,7 @@
     align-items: center
     height: 200px
     font-size: $norSize
+    padding: 10px 0 20px
     .hd-left
       width: 200px
       text-align: center
@@ -178,4 +316,22 @@
       width: 178px
       height: 178px
       display: block
+  .page-ctn
+    width: 830px
+    margin: 10px auto
+  .m-upload
+    margin: 10px 0
+    height: 30px
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    .icon-style
+      font-size: 30px
+      color: #20A0FF
+    .upload-text
+      font-size: 18px
+      line-height: 30px
+      padding-left: 10px
+    .upload-btns
+      margin: 0 10px
 </style>

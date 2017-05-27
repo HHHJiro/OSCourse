@@ -25,7 +25,7 @@ const routes = [
     ]
   },
   {
-    path: '/vdo',
+    path: '/resource',
     name: 'video',
     component: video,
     children: [
@@ -34,7 +34,7 @@ const routes = [
     ]
   },
   {
-    path: '/video/:id',
+    path: '/file/:id',
     component: vdoView
   },
   {
