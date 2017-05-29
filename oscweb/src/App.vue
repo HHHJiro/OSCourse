@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header> <ghd></ghd> </header>
+    <header> <ghd></ghd></header>
       <!-- 路由出口 -->
       <!-- 路由匹配到的组件将渲染在这里 -->
     <div class="hr"></div>

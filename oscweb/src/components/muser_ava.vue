@@ -9,6 +9,12 @@
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="add">我要上传</el-dropdown-item>
           <el-dropdown-item command="homepage">我的主页</el-dropdown-item>
+          <template v-if="user.role>=50">
+            <el-dropdown-item command="admin">系统管理</el-dropdown-item>
+          </template>
+          <template v-if="user.role>=10 && user.role<50">
+            <el-dropdown-item command="admin">团队名片</el-dropdown-item>
+          </template>
           <el-dropdown-item command="quit">退出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

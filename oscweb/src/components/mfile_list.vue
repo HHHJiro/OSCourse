@@ -57,7 +57,7 @@
         this.getInfo()
       },
       getInfo () {
-        this.$http.get('api/resource/' + this.path)
+        this.$http.get('api/files/' + this.path)
           .then(res => {
             this.videos = res.data.resrouces
             this.tag = this.tags[this.path]

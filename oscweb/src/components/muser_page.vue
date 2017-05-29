@@ -28,6 +28,7 @@
           </li>
           <li><span class="rt-desc">权限：</span><el-tag type="success">{{user.role | roleFormat}}</el-tag></li>
           <li><span class="rt-desc">来到社区：</span><el-tag type="primary">{{user.meta.createAt | formDate}}</el-tag></li>
+          <li><span class="rt-desc">密码服务：</span><el-button size="small" :plain="true" type="info">修改密码<i class="el-icon-edit el-icon--right"></i></el-button></li>
         </ul>
       </div>
     </div>
@@ -40,78 +41,99 @@
         <el-button type="primary" size="small" @click="upload">我要上传</el-button>
       </el-button-group>
       </p>
-       <el-table
-    :data="uploads"
-    :default-sort = "{prop: 'date', order: 'descending'}"
-    v-loading="refreshFlag"
-    element-loading-text="拼命加载中"
-    border
-    style="width: 100%">
-    <el-table-column
-      label="上传日期"
-      prop="date"
-      :resizable="!isTrue"
-      sortable
-      width="150">
-      <template scope="scope">
-        <el-icon name="time"></el-icon>
-        <span style="margin-left: 10px">{{ scope.row.date }}</span>
-      </template>
-    </el-table-column>
-<el-table-column
-      label="文件名称"
-      :resizable="!isTrue"
-      width="180">
-      <template scope="scope">
-        <el-popover trigger="hover" placement="top">
-          <p>文件描述: {{ scope.row.desc }}</p>
-          <div slot="reference" class="name-wrapper">
-            <el-tag :type="tagSecType[scope.row.type]">{{ scope.row.name }}</el-tag>
-          </div>
-        </el-popover>
-      </template>
-    </el-table-column>
-    <el-table-column
-      label="文件类型"
-      :resizable="!isTrue"
-      width="100">
-      <template scope="scope">
-      <el-tag >{{scope.row.path | fileType}}</el-tag>
-      </template>
-    </el-table-column>
+      <el-table
+        :data="uploads"
+        :default-sort = "{prop: 'date', order: 'descending'}"
+        v-loading="refreshFlag"
+        element-loading-text="拼命加载中"
+        border
+        style="width: 100%">
         <el-table-column
-      label="所属版块"
-      :resizable="!isTrue"
-      width="120"
-      prop="type"
-        :filters="section"
-        :filter-method="filterType"
-        filter-placement="bottom-end"
-      class="pointer"
-      >
-      <template scope="scope">
+        label="上传日期"
+        prop="date"
+        :resizable="!isTrue"
+        sortable
+        width="150">
+    <template scope="scope">
+      <el-icon name="time"></el-icon>
+      <span style="margin-left: 10px">{{ scope.row.date }}</span>
+    </template>
+  </el-table-column>
+    <el-table-column
+    label="文件名称"
+    :resizable="!isTrue"
+    width="180">
+    <template scope="scope">
+      <el-popover trigger="hover" placement="top">
+        <p>文件描述: {{ scope.row.desc }}</p>
+        <div slot="reference" class="name-wrapper">
+        <router-link :to="'/file/' + scope.row._id" >
+          <el-tag :type="tagSecType[scope.row.type]" class="tag-pointer">{{ scope.row.name }}</el-tag>
+        </router-link>
+        </div>
+      </el-popover>
+    </template>
+  </el-table-column>
+    <el-table-column
+    label="文件类型"
+    :resizable="!isTrue"
+    width="100">
+    <template scope="scope">
+      <el-tag >{{scope.row.path | fileType}}</el-tag>
+    </template>
+  </el-table-column>
+    <el-table-column
+    label="所属版块"
+    :resizable="!isTrue"
+    width="120"
+    prop="type"
+    :filters="section"
+    :filter-method="filterType"
+    filter-placement="bottom-end"
+    class="pointer"
+    >
+    <template scope="scope">
       <el-tag :type="tagSecType[scope.row.type]">{{ scope.row.type | formType}}</el-tag>
-      </template>
-    </el-table-column>
-            <el-table-column
-            :resizable="!isTrue"
-      label="浏览人数"
-      prop="pv"
-      :sortable="isTrue"
-      width="120">
-      <template scope="scope">
+    </template>
+  </el-table-column>
+    <el-table-column
+    :resizable="!isTrue"
+    label="浏览人数"
+    prop="pv"
+    :sortable="isTrue"
+    width="120">
+    <template scope="scope">
       <el-tag type="danger">{{scope.row.pv}}人</el-tag>
-      </template>
-    </el-table-column>
+    </template>
+  </el-table-column>
     <el-table-column label="操作" :resizable="!isTrue">
       <template scope="scope">
+        <el-popover
+        ref="pop"
+        placement="left-end"
+        width="300"
+        trigger="click">
+        <el-form label-position="top" label-width="80px" :model="scope.row">
+          <el-form-item label="文件名称">
+            <el-input v-model="scope.row.name"></el-input>
+          </el-form-item>
+          <el-form-item label="文件描述">
+            <el-input type="textarea" v-model="scope.row.desc"></el-input>
+          </el-form-item>
+          <el-form-item>
+          <el-button type="primary" @click="editUpload">提交修改</el-button>
+            <el-button>取消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-popover>
         <el-button
-          size="small"
-          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        size="small"
+        v-popover:pop
+        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
         <el-button
-          size="small"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        size="small"
+        type="danger"
+        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -205,7 +227,7 @@
       },
       getSelfUploads (user) {
         var self = this
-        this.$http.get('api/resource/uploadBy/' + user._id)
+        this.$http.get('api/file/uploadBy/' + user._id)
         .then(res => {
           this.uploads = res.data
           this.uploads.map(item => {
@@ -226,10 +248,13 @@
         this.$router.push('/res/add')
       },
       handleEdit (index, row) {
-        console.log(index, row)
+        console.log(index, row._id)
       },
       handleDelete (index, row) {
         console.log(index, row)
+      },
+      editUpload () {
+        console.log('修改')
       }
     }
   }
@@ -334,4 +359,6 @@
       padding-left: 10px
     .upload-btns
       margin: 0 10px
+  .tag-pointer
+    cursor: pointer
 </style>

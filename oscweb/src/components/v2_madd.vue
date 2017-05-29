@@ -5,14 +5,19 @@
       <el-form-item label="文件名称" prop="name">
       <el-input v-model="uploadForm.name"></el-input>
       </el-form-item>
-      <el-form-item label="上传类型" prop="type">
-      <el-select v-model="uploadForm.type" placeholder="选择上传的类型">
-          <el-option label="师生微课" value="micro"></el-option>
-          <el-option label="教学资源" value="teach"></el-option>
-          <div class="role" v-if="role >= 10">
-            <el-option label="教学视频" value="video"></el-option>
+      <el-form-item label="上传模块" prop="type">
+        <el-select v-model="uploadForm.type" placeholder="选择上传的类型">
+          <template v-if="role >= 50">
             <el-option label="教学大纲" value="outline"></el-option>
-          </div>
+            <el-option label="教学日历" value="cala"></el-option>
+          </template>
+          <template v-else>
+            <el-option label="师生微课" value="micro"></el-option>
+            <el-option label="教学资源" value="teach"></el-option>
+            <div class="role" v-if="role >= 10">
+              <el-option label="教学视频" value="video"></el-option>
+            </div>
+          </template>
         </el-select>
       </el-form-item>
       <el-form-item label="上传文件" prop="path">
@@ -20,7 +25,7 @@
       class="upload-demo"
       ref="upload"
       drag
-      action="/api/resource/server"
+      action="/api/file/server"
       multiple="multiple"
       :on-change="handleChange"
       :headers="authHeader"
@@ -32,7 +37,7 @@
       :file-list="fileList">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+      <div class="el-upload__tip" slot="tip">doc/ppt文档应小于1M</div>
     </el-upload>
       <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
       </el-form-item>
@@ -143,7 +148,7 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           self.formLoading = true
-          self.$http.post('api/resource/db', self.uploadForm)
+          self.$http.post('api/file/save', self.uploadForm)
             .then(res => {
               self.$message.success('添加成功')
               self.formLoading = false

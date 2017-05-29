@@ -3,7 +3,13 @@
     <div class="show-wrap">
       <div class="doc-view" v-if="isDoc">
         <p class="title"><el-tag type="primary">资源名</el-tag><span class="title-text">{{video.name}}</span></p>
-        <iframe :src="'https://docs.google.com/viewer?url=http://opsbja25o.bkt.clouddn.com/'+video.docPath+'&embedded=true'" width="960" height="630" style="border: none;"></iframe>
+        <div class="iframe-wrap"
+          v-loading="docLoading"
+          element-loading-text="拼命加载中"
+          >
+          <iframe :src="'https://docs.google.com/viewer?url=http://opsbja25o.bkt.clouddn.com/'+video.docPath+'&embedded=true'" width="960" height="630" style="border: none;"
+          @load="showReady"></iframe>
+        </div>
       </div>
       <div class="view-wrap" v-else>
         <div class="vdo-wrap">
@@ -43,7 +49,8 @@ export default {
   data () {
     return {
       video: null,
-      isDoc: false
+      isDoc: false,
+      docLoading: true
     }
   },
   created () {
@@ -54,6 +61,9 @@ export default {
     '$route': 'getInfo'
   },
   methods: {
+    showReady () {
+      this.docLoading = false
+    },
     getInfo () {
       var id = this.$route.params.id
       this.$http.get('api/file/' + id)

@@ -6,7 +6,7 @@ import video from '@/components/mvdo'
 import add from '@/components/v2_madd'
 // import add from '@/components/add_res'
 // import addVdo from '@/components/add_vdo'
-import vdoView from '@/components/vdo_view'
+import fileView from '@/components/mfile_view'
 import docView from '@/components/doc_view'
 
 Vue.use(Router)
@@ -29,13 +29,13 @@ const routes = [
     name: 'video',
     component: video,
     children: [
-        { path: 'video', component: resolve => require(['@/components/mvdo_list'], resolve) },
-        { path: 'micro', component: resolve => require(['@/components/mvdo_list'], resolve) }
+        { path: 'video', component: resolve => require(['@/components/mfile_list'], resolve) },
+        { path: 'micro', component: resolve => require(['@/components/mfile_list'], resolve) }
     ]
   },
   {
     path: '/file/:id',
-    component: vdoView
+    component: fileView
   },
   {
     path: '/res/add',
@@ -48,7 +48,15 @@ const routes = [
   },
   {
     path: '/teach',
-    component: resolve => require(['@/components/mvdo_list'], resolve)
+    component: resolve => require(['@/components/mfile_list'], resolve)
+  },
+  {
+    path: '/outline',
+    component: resolve => require(['@/components/motlcala'], resolve)
+  },
+  {
+    path: '/cala',
+    component: resolve => require(['@/components/motlcala'], resolve)
   }
 ]
 const router = new Router({routes})

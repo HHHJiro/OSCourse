@@ -8,6 +8,7 @@ const CONFIG = {
     nickName: '匿名用户',
     avatar: '/static/img/avatar/default.png'
   },
+  // 127.0.0.1:27017
   db:{dbUrl: 'mongodb://localhost/socouresV2'},
   qiniu: {
     ACCESS_KEY: 'GrmYZ5oBOT7Vpqb1iR85FVgLxUF-PMiSNY2Xc0UG',
