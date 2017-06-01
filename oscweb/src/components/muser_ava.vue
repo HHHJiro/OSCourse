@@ -13,7 +13,7 @@
             <el-dropdown-item command="admin">系统管理</el-dropdown-item>
           </template>
           <template v-if="user.role>=10 && user.role<50">
-            <el-dropdown-item command="admin">团队名片</el-dropdown-item>
+            <el-dropdown-item command="teamcard">团队名片</el-dropdown-item>
           </template>
           <el-dropdown-item command="quit">退出</el-dropdown-item>
         </el-dropdown-menu>
@@ -42,6 +42,9 @@ export default {
           break
         case 'add':
           this.$router.push('/res/add')
+          break
+        case 'teamcard':
+          this.$router.push('/teamcard')
           break
       }
     },

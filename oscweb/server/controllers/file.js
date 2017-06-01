@@ -175,13 +175,13 @@ const getResInfo = (req, res, next) => {
     .then(data => {
       Resource.findOne({_id:id})
         .populate('uploadBy', 'nickName')
-        .exec((err, video) => {
+        .exec((err, file) => {
           if (err) {
             res.send(400, err)
           } else {
-            var endFile = video.path.split('.').pop()
+            var endFile = file.path.split('.').pop()
             var fileType = endFile === 'mp4' ? 'mp4' : (isDoc.includes(endFile) ? 'doc' : 'zip')
-            res.send(200, {video: video, fileType: fileType})
+            res.send(200, {file: file, fileType: fileType})
           }
         })
     })

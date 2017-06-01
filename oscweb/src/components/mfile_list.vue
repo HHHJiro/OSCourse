@@ -84,7 +84,7 @@
       .item-in
         height: 200px
         width: 400px
-        border: 1px solid #EFF2F7
+        border: 1px solid #D3DCE6
         border-radius: 8px
         margin: 10px 0
       .item-wrap
@@ -129,7 +129,7 @@
           align-items: center
           .icon
             width: 18px
-            margin: 0 10px
+            margin: 0 5px
           .num
             font-size: 12px
   .tag

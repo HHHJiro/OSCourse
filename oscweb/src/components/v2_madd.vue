@@ -110,7 +110,8 @@ export default {
           'application/vnd.ms-excel',
           'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ],
         'video': ['video/mp4'],
-        'outline': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
+        'outline': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword'],
+        'cala': ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/msword']
       }
       if (type === '') {
         this.$message.error('选择上传类型后再上传')

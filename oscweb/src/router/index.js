@@ -57,6 +57,10 @@ const routes = [
   {
     path: '/cala',
     component: resolve => require(['@/components/motlcala'], resolve)
+  },
+  {
+    path: '/teamcard',
+    component: resolve => require(['@/components/mteam_card'], resolve)
   }
 ]
 const router = new Router({routes})

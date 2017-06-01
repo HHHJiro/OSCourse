@@ -2,21 +2,21 @@
   <div id="vdo-view">
     <div class="show-wrap">
       <div class="doc-view" v-if="isDoc">
-        <p class="title"><el-tag type="primary">资源名</el-tag><span class="title-text">{{video.name}}</span></p>
+        <p class="title"><el-tag type="primary">资源名</el-tag><span class="title-text">{{file.name}}</span></p>
         <div class="iframe-wrap"
           v-loading="docLoading"
           element-loading-text="拼命加载中"
           >
-          <iframe :src="'https://docs.google.com/viewer?url=http://opsbja25o.bkt.clouddn.com/'+video.docPath+'&embedded=true'" width="960" height="630" style="border: none;"
+          <iframe :src="'https://docs.google.com/viewer?url=http://opsbja25o.bkt.clouddn.com/'+file.docPath+'&embedded=true'" width="960" height="630" style="border: none;"
           @load="showReady"></iframe>
         </div>
       </div>
       <div class="view-wrap" v-else>
         <div class="vdo-wrap">
-          <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">{{video.name}}</span></p>
+          <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">{{file.name}}</span></p>
           <video width="960" height="630" controls autoplay preload>
-            <source :src="video.path" type="video/mp4">
-              Your browser does not support the video tag.
+            <source :src="file.path" type="video/mp4">
+              Your browser does not support the file tag.
             </video>
           </div>
         </div>
@@ -24,16 +24,16 @@
           <p class="title info-tag"><el-tag type="success">资源信息</el-tag></p>
           <div class="info-text">
             <ul class="info-textag">
-              <li><el-tag type="primary">观看：{{video.pv}}</el-tag></li>
+              <li><el-tag type="primary">观看：{{file.pv}}</el-tag></li>
               <!-- <li><el-tag type="warning">留言：321</el-tag></li> -->
-              <li><el-tag type="primary">上传者：{{video.uploadBy.nickName}}</el-tag></li>
-              <li><el-tag type="warning">上传时间：{{video.meta.createAt | formDate}}</el-tag></li>
+              <li><el-tag type="primary">上传者：{{file.uploadBy.nickName}}</el-tag></li>
+              <li><el-tag type="warning">上传时间：{{file.meta.createAt | formDate}}</el-tag></li>
             </ul>
           </div>
         </div>
       </div>
       <div class="desc-wrap">
-        <p class="desc-text"><span class="desc-tag"><el-tag type="primary">简介</el-tag></span>{{video.desc}}</p>
+        <p class="desc-text"><span class="desc-tag"><el-tag type="primary">简介</el-tag></span>{{file.desc}}</p>
       </div>
 <!--     <div class="hr"></div>
     <div class="comments-wrap">
@@ -48,7 +48,14 @@
 export default {
   data () {
     return {
-      video: null,
+      file: {
+        name: '',
+        docPath: '',
+        path: '',
+        pv: '',
+        uploadBy: {nickName: ''},
+        meta: {createAt: ''}
+      },
       isDoc: false,
       docLoading: true
     }
@@ -68,9 +75,9 @@ export default {
       var id = this.$route.params.id
       this.$http.get('api/file/' + id)
         .then(res => {
-          this.video = res.data.video
+          this.file = res.data.file
           this.isDoc = res.data.fileType === 'doc'
-          this.video.docPath = this.video.path.split('/').pop()
+          this.file.docPath = this.file.path.split('/').pop()
         }, res => {
           this.$message.error('失败' + res)
         })

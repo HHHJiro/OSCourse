@@ -19,7 +19,7 @@
           <el-menu-item index="/team" >教学团队</el-menu-item>
           <el-menu-item index="/teach" >教学资源</el-menu-item>
           <el-menu-item index="/cala" >教学日历</el-menu-item>
-          <el-menu-item index="/community" @click="getInfo">讨论区</el-menu-item>
+<!--           <el-menu-item index="/community" @click="getInfo">讨论区</el-menu-item> -->
         </el-menu>
         <div class="login">
           <mlgn :isAuth="isAuth"></mlgn>

@@ -51,6 +51,8 @@ server.get('api/file/:id', file.getResInfo)
 
 // 用户上传头像
 server.post('api/user/avatar', auth.verifyToken, file.uploadAvatar, file.editAvaPath,file.uploadSend)
+//上传教师团队资料
+server.post('api/user/team', auth.verifyToken, user.teamCard)
 //注册
 server.post('api/user/add', auth.userAdd)
 //登录 签发token

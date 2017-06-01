@@ -15,7 +15,6 @@ const formDate =  (t, type = 2) => {
   // 3 24小时显示内距离现在过去多久,24小时以上显示日期不带时分秒
   const timeSpan = new Date(t).getTime()
   const dateTime = new Date(parseInt(timeSpan))
-
   const year = dateTime.getFullYear()
   const month = dateTime.getMonth() + 1
   const day = dateTime.getDate()
@@ -59,7 +58,9 @@ const formType = (type) => {
   let typeTrans = {
     'micro': '师生微课',
     'teach': '教学资源',
-    'video': '教学视频'
+    'video': '教学视频',
+    'outline': '教学大纲',
+    'cala': '教学日历'
   }
   return typeTrans[type]
 }

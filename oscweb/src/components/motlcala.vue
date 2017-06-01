@@ -4,10 +4,12 @@
       <li class="file-card" v-for="file in files">
         <el-card :body-style="{ padding: '0px' }">
         <img src="/static/img/word.png" class="image">
-          <div style="padding: 14px;">
+          <div style="padding: 14px;background: #F9FAFC">
             <p class="download-wrap">
-              <router-link :to="'/file/' + file._id" :video="file.name">{{ file.name }} </router-link>
-              <el-button type="primary" class="download" size="small">下载</el-button>
+              <el-tooltip class="item" effect="light" :content="file.name" placement="top-start">
+                <router-link  :to="'/file/' + file._id" >{{ file.name }} </router-link>
+              </el-tooltip>
+              <el-button type="success" class="download" size="small">下载</el-button>
             </p>
             <div class="bottom clearfix">
               <time class="time">{{ file.meta.createAt | formDate}}</time>
@@ -52,8 +54,9 @@
 <style lang="sass" scoped>
   .card-wrap
     width: 800px
-    margin: 20px auto
+    margin: 80px auto 0
     display: flex
+    flex-wrap: wrap
     justify-content: space-around
     .file-card
       width: 300px
@@ -77,12 +80,16 @@
     clear: both
   .bottom
     margin-top: 13px
-    line-height: 12px
     font-size: 14px
     color: #475669
+    min-height: 36px
   a
     color: #222
+    display: inline-block
+    max-width: 210px
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
     &:hover
       text-decoration: underline
-    
 </style>

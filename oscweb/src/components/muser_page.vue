@@ -64,7 +64,7 @@
     :resizable="!isTrue"
     width="180">
     <template scope="scope">
-      <el-popover trigger="hover" placement="top">
+      <el-popover trigger="hover" placement="top" :title="scope.row.name">
         <p>文件描述: {{ scope.row.desc }}</p>
         <div slot="reference" class="name-wrapper">
         <router-link :to="'/file/' + scope.row._id" >
@@ -149,11 +149,7 @@
         editName: false,
         refreshFlag: false,
         user: {},
-        section: [
-          { text: '师生微课', value: 'micro' },
-          { text: '教学资源', value: 'teach' },
-          { text: '教学视频', value: 'video' }
-        ],
+        section: [],
         imageUrl: '',
         iconEdit: {
           edit: 'el-icon-edit',
@@ -163,7 +159,9 @@
         tagSecType: {
           'micro': 'success',
           'teach': 'primary',
-          'video': 'warning'
+          'video': 'warning',
+          'outline': 'success',
+          'cala': 'primary'
         },
         uploads: []
       }
@@ -181,6 +179,8 @@
           return '同学'
         }
       }
+    },
+    mounted () {
     },
     methods: {
       handleAvatarSuccess (res, file) {
@@ -222,6 +222,7 @@
           return data
         })
         .then(data => {
+          self.setSection(data.role)
           self.getSelfUploads(data)
         })
       },
@@ -255,6 +256,25 @@
       },
       editUpload () {
         console.log('修改')
+      },
+      setSection (role) {
+        if (role >= 50) {
+          this.section = [
+            { text: '教学大纲', value: 'outline' },
+            { text: '教学日历', value: 'cala' }
+          ]
+        } else if (role >= 10) {
+          this.section = [
+            { text: '师生微课', value: 'micro' },
+            { text: '教学资源', value: 'teach' },
+            { text: '教学视频', value: 'video' }
+          ]
+        } else {
+          this.section = [
+            { text: '师生微课', value: 'micro' },
+            { text: '教学资源', value: 'teach' }
+          ]
+        }
       }
     }
   }

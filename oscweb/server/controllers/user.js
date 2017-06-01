@@ -1,5 +1,5 @@
 const User = require('../models/user.js')
-
+const _ = require('lodash')
 // const getUserInfo = async  (req, res, next) => {
 //   const params = req.params
 //   let id = params.id // 获取url里传过来的参数里的id
@@ -14,7 +14,15 @@ const showInfo = async (req, res) => {
   const result = await User.findById(id).catch(err => console.log(err))
   res.send(200,{result})
 }
-
+//新增team
+const teamCard = (req, res) => {
+  User.findOneAndUpdate({_id: req.id}, {$set: {team: '123'}}, (err, info) => {
+    if (err) {
+      console.log(err)
+    }
+    res.send(200, info)
+  })
+}
 // 显示所有的人
 const getAllUserInfo = async (req, res, next) => {
   const result = await User.fetch().catch(function (err){console.log(err)})
@@ -37,5 +45,6 @@ module.exports = {
   // getUserInfo,
   showInfo,
   getAllUserInfo,
-  putInfo
+  putInfo,
+  teamCard
 }
