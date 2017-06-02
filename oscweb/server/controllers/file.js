@@ -167,6 +167,33 @@ const getType = (req, res) => {
       res.send(200, {resrouces: resrouces})
     })
 }
+//修改文件信息
+const editFile = (req, res) => {
+  let id = req.params.id
+  Resource.findById(id)
+    .then(file => {
+      let result = _.assign(file, req.body)
+      result.save((err, result) => {
+        if (err) {
+          console.log(err)
+          res.send(400,{info: '修改失败'})
+        } else {
+          res.send(200, '修改成功')
+        }
+      })
+    })
+}
+
+const removeFile = (req, res) => {
+  let id = req.params.id
+  Resource.remove({_id: id}, err => {
+    if (err) {
+      res.send(400,{info: '删除失败'})
+    } else {
+      res.send(200)
+    }
+  })
+}
 
 //找到某一确定资源信息
 const getResInfo = (req, res, next) => {
@@ -195,5 +222,7 @@ module.exports = {
   editAvaPath,
   saveToDb,
   getType,
-  getOneUploads
+  getOneUploads,
+  editFile,
+  removeFile
 }

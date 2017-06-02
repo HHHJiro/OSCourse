@@ -46,6 +46,9 @@ export default {
         case 'teamcard':
           this.$router.push('/teamcard')
           break
+        case 'admin':
+          this.$router.push('/admin')
+          break
       }
     },
     commandQuit () {

@@ -85,7 +85,7 @@
     <el-table-column
     label="所属版块"
     :resizable="!isTrue"
-    width="120"
+    width="140"
     prop="type"
     :filters="section"
     :filter-method="filterType"
@@ -109,31 +109,35 @@
     <el-table-column label="操作" :resizable="!isTrue">
       <template scope="scope">
         <el-popover
-        ref="pop"
+        ref="popover{{$index}}"
+        v-model="scope.row.visible"
         placement="left-end"
         width="300"
         trigger="click">
         <el-form label-position="top" label-width="80px" :model="scope.row">
           <el-form-item label="文件名称">
-            <el-input v-model="scope.row.name"></el-input>
+            <el-input v-model="scope.row.newName" :placeholder="scope.row.name"></el-input>
           </el-form-item>
           <el-form-item label="文件描述">
-            <el-input type="textarea" v-model="scope.row.desc"></el-input>
+            <el-input type="textarea" v-model="scope.row.newDesc" :placeholder="scope.row.desc"></el-input>
           </el-form-item>
           <el-form-item>
-          <el-button type="primary" @click="editUpload">提交修改</el-button>
-            <el-button>取消</el-button>
+          <el-button type="primary" @click="editUpload(scope.row, scope.$index)">提交修改</el-button>
+            <el-button @click="scope.row.visible = false">取消</el-button>
           </el-form-item>
         </el-form>
       </el-popover>
         <el-button
         size="small"
-        v-popover:pop
-        @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        v-popover:popover{{$index}}
+        icon="edit"
+        type="primary"
+        @click="handleEdit(scope.$index, scope.row)"></el-button>
         <el-button
         size="small"
         type="danger"
-        @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        icon="delete"
+        @click="handleDelete(scope.$index, scope.row)"></el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -231,8 +235,9 @@
         this.$http.get('api/file/uploadBy/' + user._id)
         .then(res => {
           this.uploads = res.data
-          this.uploads.map(item => {
+          this.uploads.map((item, index) => {
             item.date = item.meta.createAt.substr(0, 10)
+            self.$set(self.uploads[index], 'visible', false)
           })
         })
         .then(res => {
@@ -249,13 +254,39 @@
         this.$router.push('/res/add')
       },
       handleEdit (index, row) {
-        console.log(index, row._id)
+        // console.log(index, row._id)
       },
       handleDelete (index, row) {
-        console.log(index, row)
+        // console.log(index, row)
+        var removeIndex = this.uploads.indexOf(row)
+        this.$http.delete('api/file/' + row._id)
+          .then(res => {
+            this.uploads.splice(removeIndex, 1)
+            this.$message.success('操作成功')
+          }, res => {
+            this.$message.error(res.data)
+          })
       },
-      editUpload () {
-        console.log('修改')
+      editUpload (file, index) {
+        let editInfo = {
+          name: file.newName,
+          desc: file.newDesc
+        }
+        if (editInfo.name !== undefined && editInfo.desc !== undefined) {
+          this.$http.put('api/file/' + file._id, editInfo)
+            .then(res => {
+              this.$message.success('修改成功')
+              file.name = file.newName
+              file.desc = file.newDesc
+              file.newName = ''
+              file.newDesc = ''
+              file.visible = false
+            }, res => {
+              this.$message.error(res.info)
+            })
+        } else {
+          this.$message.error('没有输入内容')
+        }
       },
       setSection (role) {
         if (role >= 50) {
@@ -364,6 +395,7 @@
   .page-ctn
     width: 830px
     margin: 10px auto
+    min-height: 400px
   .m-upload
     margin: 10px 0
     height: 30px

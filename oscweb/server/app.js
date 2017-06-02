@@ -4,6 +4,7 @@ const config = require('./config.js')
 const mongoose = require('mongoose')
 const auth = require('./controllers/auth')
 const user = require('./controllers/user')
+const team = require('./controllers/team')
 // const Utils = require('./utils')
 const path = require('path')
 const file = require('./controllers/file')
@@ -44,15 +45,21 @@ server.post('api/file/save', auth.verifyToken, file.saveToDb)
 server.get('api/files/:type', file.getType)
 //查看个人上传resource/uploadBy/:id
 server.get('api/file/uploadBy/:id', file.getOneUploads)
-
-// server.get('api/users', api.getAllUserInfo)
 //查看某个文件
 server.get('api/file/:id', file.getResInfo)
+//修改我的上传
+server.put('api/file/:id', file.editFile)
+//删除我的上传
+server.del('api/file/:id', file.removeFile)
 
+//上传教师团队资料
+server.post('api/team', auth.verifyToken, team.saveInfo)
+//获取个人团队资料
+server.get('api/team/:id', team.getTeamInfo)
+//获取团队的所有资料
+server.get('api/teams', team.getAllTeam)
 // 用户上传头像
 server.post('api/user/avatar', auth.verifyToken, file.uploadAvatar, file.editAvaPath,file.uploadSend)
-//上传教师团队资料
-server.post('api/user/team', auth.verifyToken, user.teamCard)
 //注册
 server.post('api/user/add', auth.userAdd)
 //登录 签发token

@@ -59,6 +59,14 @@ const routes = [
     component: resolve => require(['@/components/motlcala'], resolve)
   },
   {
+    path: '/team',
+    component: resolve => require(['@/components/mteams_info'], resolve)
+  },
+  {
+    path: '/admin',
+    component: resolve => require(['@/components/madmin'], resolve)
+  },
+  {
     path: '/teamcard',
     component: resolve => require(['@/components/mteam_card'], resolve)
   }

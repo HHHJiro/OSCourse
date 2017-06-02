@@ -72,10 +72,20 @@ const formRole = (role) => {
 const fileType = (path) => {
   return path.split('.').pop()
 }
+const teamTitle = (title) => {
+  let titles = {
+    'tit1': '助教',
+    'tit2': '讲师',
+    'tit3': '副教授',
+    'tit4': '教授'
+  }
+  return titles[title]
+}
 export default {
 	getInfo,
 	formDate,
   formType,
   fileType,
-  formRole
+  formRole,
+  teamTitle
 }
