@@ -1,29 +1,34 @@
 <template>
-  <div class="teach">
-    <div class="video-wrap">
-      <ul class="items-wrap item-vdo">
-        <li v-for="item in videos" class="item-in">
-        <div class="item-wrap">
-          <div class="vdo-hd">
-            <div class="avatar"><img :src="item.uploadBy.avatar" alt="avatar"></div>
-            <span class="auth-name">{{item.uploadBy.nickName}}</span>
-            <span class="upload-time">{{item.meta.updateAt | formDate}}</span>
-          </div>
-          <div class="vdo-ctn">
-              <h2 class="title"><router-link :to="'/file/' + item._id" :video="item.name">{{item.name}}</router-link></h2>
-            <p class="desc">{{item.desc}}</p>
-          </div>
-          <div class="vdo-ft">
-            <el-tag type="success" class="tag">{{tag}}</el-tag>
-            <el-tag type="primary" class="tag">{{item.uploadBy.role | formRole}}</el-tag>
-            <img src="/static/img/play.png" class="icon icon-wth">
-            <span class="num num-wth">{{item.pv}}</span>
-            <img src="/static/img/download.png" class="icon icon-dwn">
-            <span class="num num-dwn">{{item.download}}</span>
-          </div>
-        </div>
-        </li>
-      </ul>
+  <div class="search-result">
+  <div class="title-wrap">
+      <el-tag class="tag-title" type="primary">搜索结果</el-tag>
+    </div>
+    <div class="teach">
+      <div class="video-wrap">
+        <ul class="items-wrap item-vdo">
+          <li v-for="item in files" class="item-in">
+            <div class="item-wrap">
+              <div class="vdo-hd">
+                <div class="avatar"><img :src="item.uploadBy.avatar" alt="avatar"></div>
+                <span class="auth-name">{{item.uploadBy.nickName}}</span>
+                <span class="upload-time">{{item.meta.updateAt | formDate}}</span>
+              </div>
+              <div class="vdo-ctn">
+                <h2 class="title"><router-link :to="'/file/' + item._id" :video="item.name">{{item.name}}</router-link></h2>
+                <p class="desc">{{item.desc}}</p>
+              </div>
+              <div class="vdo-ft">
+                <el-tag type="success" class="tag">{{item.type | formType}}</el-tag>
+                <el-tag type="primary" class="tag">{{item.uploadBy.role | formRole}}</el-tag>
+                <img src="/static/img/play.png" class="icon icon-wth">
+                <span class="num num-wth">{{item.pv}}</span>
+                <img src="/static/img/download.png" class="icon icon-dwn">
+                <span class="num num-dwn">{{item.download}}</span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -31,38 +36,29 @@
   export default {
     data () {
       return {
-        videos: [],
+        keyword: '',
+        files: [],
         type: '',
         path: '',
         tag: '',
-        role: '',
-        tags: {
-          'video': '教学视频',
-          'micro': '师生微课',
-          'teach': '教学资源'
-        }
+        role: ''
       }
     },
-    mounted () {
-    },
     created () {
-      this.getType()
+      this.getResult()
+    },
+    mounted: function () {
+      // this.data = this.$route.query.q
     },
     watch: {
-      '$route': 'getType'
+      '$route': 'getResult'
     },
     methods: {
-      getType () {
-        this.path = this.$route.path.split('/').pop()
-        this.getInfo()
-      },
-      getInfo () {
-        this.$http.get('api/files/' + this.path)
+      getResult: function () {
+        this.keyword = this.$route.query.q
+        this.$http.get('api/search/result?q=' + this.keyword)
           .then(res => {
-            this.videos = res.data.resrouces
-            this.tag = this.tags[this.path]
-          }, res => {
-            console.log('wrong')
+            this.files = res.data
           })
       }
     }
@@ -133,6 +129,14 @@
             margin: 0 5px
           .num
             font-size: 12px
+  .title-wrap
+    width: 900px
+    margin: 15px auto
+  .tag-title
+    padding: 6px 10px
+    font-size: 16px
+    height: 40px
+    line-height: 28px
   .tag
     margin: 0 5px
   img

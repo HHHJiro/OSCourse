@@ -77,6 +77,7 @@ export default {
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
     color: #2c3e50
+    min-width: 1366px
   .hr
     width: 100%
     background: rgb(241, 242, 243)
@@ -85,6 +86,7 @@ export default {
     margin: $marTop $marLR $marBtm
     background-color: #fff
     min-height: 400px
+    min-width: 1200px
 
   .fadeUp-leave-active, .fade-enter
     transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0)

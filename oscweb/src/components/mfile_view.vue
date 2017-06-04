@@ -14,9 +14,8 @@
       <div class="view-wrap" v-else>
         <div class="vdo-wrap">
           <p class="title"><el-tag type="primary">视频</el-tag><span class="title-text">{{file.name}}</span></p>
-          <video width="960" height="630" controls autoplay preload>
-            <source :src="file.path" type="video/mp4">
-              Your browser does not support the file tag.
+            <video :src="file.path" width="960" height="630" controls autoplay name="media">
+              您的浏览器不支持 video 标签。
             </video>
           </div>
         </div>

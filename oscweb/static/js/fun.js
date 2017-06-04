@@ -81,11 +81,20 @@ const teamTitle = (title) => {
   }
   return titles[title]
 }
+const formAllRole = (role) => {
+  let roles = {
+    '0': '学生',
+    '10': '教师',
+    '50': '管理员'
+  }
+  return roles[role]
+}
 export default {
 	getInfo,
 	formDate,
   formType,
   fileType,
   formRole,
-  teamTitle
+  teamTitle,
+  formAllRole
 }

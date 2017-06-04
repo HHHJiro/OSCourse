@@ -44,6 +44,7 @@ const routes = [
   },
   {
     path: '/user/:id',
+    meta: { requiresAuth: true },
     component: resolve => require(['@/components/muser_page'], resolve)
   },
   {
@@ -64,11 +65,17 @@ const routes = [
   },
   {
     path: '/admin',
+    meta: { requiresAuth: true },
     component: resolve => require(['@/components/madmin'], resolve)
   },
   {
     path: '/teamcard',
+    meta: { requiresAuth: true },
     component: resolve => require(['@/components/mteam_card'], resolve)
+  },
+  {
+    path: '/search',
+    component: resolve => require(['@/components/msrh_result'], resolve)
   }
 ]
 const router = new Router({routes})

@@ -31,10 +31,30 @@ const putInfo = (req, res) => {
   })
   res.send(201, '修改成功')
 }
+const analysisUser = (req, res) => {
+  User.aggregate(
+    {
+      $group: {
+        _id : '$role', 
+        total: {'$sum': 1}
+      }
+    }
+  )
+    .exec((err, data) => {
+      res.send(200, data)
+    })
+}
+// 管理员得到所有用户信息
+const adminGetUserInfo = (req, res) => {
+  User.find({}, {'avatar': 1, 'nickName': 1, 'role': 1, 'meta.createAt' : 1} ,(err, data) => {
+    res.send(data)
+  } )
+}
 
 module.exports = {
-  // getUserInfo,
   showInfo,
   getAllUserInfo,
-  putInfo
+  putInfo,
+  analysisUser,
+  adminGetUserInfo
 }

@@ -60,10 +60,12 @@
     justify-content: space-around
     .file-card
       width: 300px
+      .el-card
+        background: #EFF2F7
       .image 
         width: 128px
         display: block
-        margin: 15px auto 0
+        margin: 15px auto
       .time 
         font-size: 12px
         color: #999

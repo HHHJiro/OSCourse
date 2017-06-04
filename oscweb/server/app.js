@@ -41,6 +41,10 @@ server.get('api/echo/:name', function (req, res, next) {
 server.post('api/file/server', auth.verifyToken, file.uploadRes)
 // 用户将上传的文件存入数据库resource/db
 server.post('api/file/save', auth.verifyToken, file.saveToDb)
+//搜索文件提示
+server.get('api/search/tips', file.getSearchTips)
+//搜索文件
+server.get('api/search/result', file.getSearchResult)
 // 查看某类型的文档resource/:type
 server.get('api/files/:type', file.getType)
 //查看个人上传resource/uploadBy/:id
@@ -68,7 +72,14 @@ server.post('api/user/auth', auth.login)
 server.get('api/user/info', auth.verifyToken, user.showInfo)
 // 修改用户信息
 server.put('api/user/info', auth.verifyToken, user.putInfo)
-
+// 分析用户信息echarts
+server.get('api/admin/anauser', user.analysisUser)
+// 分析文件信息echarts
+server.get('api/admin/anafile', file.analysisFile)
+// 分析用户信息
+server.get('api/admin/anaUserInfo', file.adminGetUserInfo)
+// 分析文件信息
+server.get('api/admin/anaFilesInfo', file.adminGetFilesInfo)
 server.listen(config.server.PORT, function () {
   console.log('%s listening at %s', server.name, server.url)
 })

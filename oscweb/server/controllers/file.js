@@ -214,6 +214,78 @@ const getResInfo = (req, res, next) => {
     })
 }
 
+//搜索提示
+const getSearchTips = (req, res) => {
+  Resource.find({}, 'name desc')
+    .exec((err, files) => {
+      res.send(200, files)
+    })
+}
+//搜索结果
+const getSearchResult = (req, res) => {
+  let sortBy = '-meta.createAt'
+  const keyword = req.query.q
+  const reg = new RegExp(keyword, 'i') //不区分大小写
+  Resource.find(
+    {
+      $or: [ //多条件，数组
+        {name : {$regex : reg}},
+        {desc : {$regex : reg}}
+      ]
+    })
+    .sort(sortBy)
+    .populate('uploadBy', ['nickName', 'avatar', 'role'])
+    .exec((err, result) => {
+      res.send(200,result)
+    })
+}
+//分析文件信息
+const analysisFile = (req, res) => {
+  let key = req.query.key || 1
+  Resource.aggregate(
+    {
+      $group: {
+        _id : '$type', 
+        total: {'$sum': key}
+      }
+    }
+  )
+    .exec((err, data) => {
+      Resource.count({}, (err, counts) => {
+        res.send(200, {countQuery: data, countFile: counts})
+      })
+    })
+}
+
+const adminGetUserInfo = (req, res) => {
+  Resource.aggregate([
+    {
+      '$group': {
+        '_id' : '$uploadBy',
+        'totleUpload': {'$sum' : 1},
+        'totlePv': {'$sum': '$pv'}
+      }
+    },
+    {
+      '$lookup' : {
+        'from': 'users',
+        'localField': '_id',
+        'foreignField': '_id',
+        'as': 'user'
+      }
+    },
+    { '$sort': { 'user.meta.createAt': -1 } }
+  ],(err, data) => {
+    res.send(200, data)
+  })
+}
+
+const adminGetFilesInfo = (req, res) => {
+  Resource.find({}, (err, data) => {
+    res.send(200, data)
+  })
+}
+
 module.exports = {
   uploadSend,
   uploadAvatar,
@@ -224,5 +296,10 @@ module.exports = {
   getType,
   getOneUploads,
   editFile,
-  removeFile
+  removeFile,
+  getSearchTips,
+  getSearchResult,
+  analysisFile,
+  adminGetUserInfo,
+  adminGetFilesInfo
 }
