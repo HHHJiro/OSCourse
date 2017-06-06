@@ -28,7 +28,7 @@
           </li>
           <li><span class="rt-desc">权限：</span><el-tag type="success">{{user.role | roleFormat}}</el-tag></li>
           <li><span class="rt-desc">来到社区：</span><el-tag type="primary">{{user.meta.createAt | formDate}}</el-tag></li>
-          <li><span class="rt-desc">密码服务：</span><el-button size="small" :plain="true" type="info">修改密码<i class="el-icon-edit el-icon--right"></i></el-button></li>
+<!--           <li><span class="rt-desc">密码服务：</span><el-button size="small" :plain="true" type="info">修改密码<i class="el-icon-edit el-icon--right"></i></el-button></li> -->
         </ul>
       </div>
     </div>

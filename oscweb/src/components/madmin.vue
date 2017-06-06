@@ -203,7 +203,13 @@
         filesByPage: [],
         pageSize: 8,
         files: [],
-        section: [],
+        section: [
+          { text: '教学大纲', value: 'outline' },
+          { text: '教学日历', value: 'cala' },
+          { text: '师生微课', value: 'micro' },
+          { text: '教学资源', value: 'teach' },
+          { text: '教学视频', value: 'video' }
+        ],
         tagSecType: {
           'micro': 'success',
           'teach': 'primary',
@@ -331,7 +337,7 @@
               data: [
               { value: self.fileTypeCount['video'], name: '教学视频' },
               { value: self.fileTypeCount['micro'], name: '师生微课' },
-              { value: self.fileTypeCount['ouline'], name: '教学大纲' },
+              { value: self.fileTypeCount['outline'], name: '教学大纲' },
               { value: self.fileTypeCount['teach'], name: '教学资源' },
               { value: self.fileTypeCount['cala'], name: '教学日历' }
               ],
@@ -471,6 +477,11 @@
         console.log(row)
         this.filesByPage.splice(removeIndex, 1)
         this.$message.success('操作成功')
+      },
+      editUpload (row, index) {
+        row.name = row.newName
+        row.desc = row.newDesc
+        row.visible = false
       }
     }
   }
